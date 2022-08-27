@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'Entrar',
+          title: const Text('Entrar'),
         ),
         body: Container(
           alignment: Alignment.center,

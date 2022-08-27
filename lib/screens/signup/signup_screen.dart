@@ -18,7 +18,7 @@ class SignUpScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'Cadastrar',
+          title: const Text('Cadastrar'),
         ),
         body: Container(
           alignment: Alignment.center,

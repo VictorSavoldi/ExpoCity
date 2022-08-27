@@ -45,7 +45,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
     return Scaffold(
       drawer: const CustomDrawer(),
-      appBar: CustomAppBar(title: 'Cadastrar Manifestação'),
+      appBar: CustomAppBar(title: const Text('Cadastrar Manifestação')),
       body: Container(
         alignment: Alignment.center,
         child: SingleChildScrollView(

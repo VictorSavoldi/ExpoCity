@@ -21,7 +21,7 @@ class NeighborhoodScreen extends StatelessWidget {
     final node = FocusScope.of(context);
 
     return Scaffold(
-      appBar: CustomAppBar(title: 'Bairros'),
+      appBar: CustomAppBar(title: const Text('Bairros')),
       body: Center(
         child: Card(
           shape: RoundedRectangleBorder(
