@@ -52,6 +52,9 @@ abstract class _SignupStore with Store {
     } catch (e) {
       errorText = e.toString();
     }
+
+    errorText = '';
+
     loading = false;
   }
 

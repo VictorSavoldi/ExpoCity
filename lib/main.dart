@@ -1,4 +1,4 @@
-import 'package:expocity/repositories/table_keys.dart';
+import 'package:expocity/repositories/application_keys.dart';
 import 'package:expocity/screens/base/base_screen.dart';
 import 'package:expocity/stores/category_store.dart';
 import 'package:expocity/stores/city_store.dart';

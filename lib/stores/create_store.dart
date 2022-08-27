@@ -1,6 +1,10 @@
 import 'package:expocity/models/category.dart';
 import 'package:expocity/models/city.dart';
+import 'package:expocity/models/manifestation.dart';
 import 'package:expocity/models/neighborhood.dart';
+import 'package:expocity/repositories/manifestation_repository.dart';
+import 'package:expocity/stores/user_manager_store.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 part 'create_store.g.dart';
@@ -39,6 +43,9 @@ abstract class _CreateStore with Store {
 
   @observable
   String errorText = '';
+
+  @observable
+  bool savedManifestation = false;
 
   @action
   void setTitle(String value) => title = value;
@@ -145,11 +152,30 @@ abstract class _CreateStore with Store {
     loading = true;
 
     try {
-      print('Teste');
+      final manifestation = Manifestation();
+
+      manifestation.title = title;
+      manifestation.description = description;
+      manifestation.street = street;
+
+      manifestation.category = category!;
+      manifestation.city = city!;
+      manifestation.neighborhood = neighborhood!;
+
+      manifestation.hidName = hideName!;
+
+      manifestation.images = images;
+      manifestation.user = GetIt.I<UserManagerStore>().user!;
+
+      await ManifestationRepository().save(manifestation);
+
+      savedManifestation = true;
+
+      errorText = '';
+
+      loading = false;
     } catch (e) {
       errorText = e.toString();
     }
-
-    loading = false;
   }
 }
