@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         canvasColor: Colors.transparent,
         primaryColor: defaultColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: backgoundColor,
+        scaffoldBackgroundColor: backgroundColor,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: defaultColor,
         ),

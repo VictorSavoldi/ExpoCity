@@ -16,7 +16,7 @@ class ImageDialog extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: Card(
-        color: backgoundColor,
+        color: backgroundColor,
         margin: const EdgeInsets.symmetric(horizontal: 45),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         elevation: 8,

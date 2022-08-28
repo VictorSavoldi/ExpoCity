@@ -23,7 +23,7 @@ class PageTile extends StatelessWidget {
       alignment: Alignment.center,
       decoration: const BoxDecoration(
         border: (Border(bottom: BorderSide(color: Colors.black12, width: 2))),
-        color: backgoundColor,
+        color: backgroundColor,
       ),
       child: ListTile(
         title: Text(
