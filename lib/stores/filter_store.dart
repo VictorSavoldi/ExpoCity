@@ -37,29 +37,17 @@ abstract class _FilterStore with Store {
 
   @action
   void setCity(City value) => city = value;
-
-  @action
   void setNeighborhood(Neighborhood value) => neighborhood = value;
-
-  @action
   void setOrderBy(OrderBy value) => orderBy = value;
-
-  @action
   void selectManifestationStatus(int value) => manifestationStatus = value;
-
-  @action
   void setManifestationStatus(int status) =>
       manifestationStatus = manifestationStatus | status;
-
-  @action
   void resetManifestationStatus(int status) =>
       manifestationStatus = manifestationStatus & ~status;
 
   @computed
   bool get isStatusActive =>
       (manifestationStatus & MANIFESTATION_STATUS_ACTIVE) != 0;
-
-  @computed
   bool get isStatusResolved =>
       (manifestationStatus & MANIFESTATION_STATUS_RESOLVED) != 0;
 
