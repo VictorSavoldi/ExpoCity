@@ -56,8 +56,61 @@ mixin _$FilterStore on _FilterStore, Store {
     });
   }
 
+  late final _$cityAtom = Atom(name: '_FilterStore.city', context: context);
+
+  @override
+  City? get city {
+    _$cityAtom.reportRead();
+    return super.city;
+  }
+
+  @override
+  set city(City? value) {
+    _$cityAtom.reportWrite(value, super.city, () {
+      super.city = value;
+    });
+  }
+
+  late final _$neighborhoodAtom =
+      Atom(name: '_FilterStore.neighborhood', context: context);
+
+  @override
+  Neighborhood? get neighborhood {
+    _$neighborhoodAtom.reportRead();
+    return super.neighborhood;
+  }
+
+  @override
+  set neighborhood(Neighborhood? value) {
+    _$neighborhoodAtom.reportWrite(value, super.neighborhood, () {
+      super.neighborhood = value;
+    });
+  }
+
   late final _$_FilterStoreActionController =
       ActionController(name: '_FilterStore', context: context);
+
+  @override
+  void setCity(City value) {
+    final _$actionInfo = _$_FilterStoreActionController.startAction(
+        name: '_FilterStore.setCity');
+    try {
+      return super.setCity(value);
+    } finally {
+      _$_FilterStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setNeighborhood(Neighborhood value) {
+    final _$actionInfo = _$_FilterStoreActionController.startAction(
+        name: '_FilterStore.setNeighborhood');
+    try {
+      return super.setNeighborhood(value);
+    } finally {
+      _$_FilterStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setOrderBy(OrderBy value) {
@@ -108,6 +161,8 @@ mixin _$FilterStore on _FilterStore, Store {
     return '''
 orderBy: ${orderBy},
 manifestationStatus: ${manifestationStatus},
+city: ${city},
+neighborhood: ${neighborhood},
 isStatusActive: ${isStatusActive},
 isStatusResolved: ${isStatusResolved}
     ''';

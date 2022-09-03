@@ -1,3 +1,7 @@
+import 'package:expocity/models/city.dart';
+import 'package:expocity/models/neighborhood.dart';
+import 'package:expocity/stores/home_store.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 part 'filter_store.g.dart';
@@ -10,11 +14,32 @@ const MANIFESTATION_STATUS_RESOLVED = 1 << 1;
 class FilterStore = _FilterStore with _$FilterStore;
 
 abstract class _FilterStore with Store {
+  _FilterStore();
+
+  _FilterStore.cloned({
+    required this.orderBy,
+    required this.manifestationStatus,
+    required this.city,
+    required this.neighborhood,
+  });
+
   @observable
   OrderBy orderBy = OrderBy.RECENT;
 
   @observable
   int manifestationStatus = MANIFESTATION_STATUS_ACTIVE;
+
+  @observable
+  City? city;
+
+  @observable
+  Neighborhood? neighborhood;
+
+  @action
+  void setCity(City value) => city = value;
+
+  @action
+  void setNeighborhood(Neighborhood value) => neighborhood = value;
 
   @action
   void setOrderBy(OrderBy value) => orderBy = value;
@@ -37,4 +62,17 @@ abstract class _FilterStore with Store {
   @computed
   bool get isStatusResolved =>
       (manifestationStatus & MANIFESTATION_STATUS_RESOLVED) != 0;
+
+  void save() {
+    GetIt.I<HomeStore>().setFilter(this as FilterStore);
+  }
+
+  FilterStore clone() {
+    return FilterStore.cloned(
+      orderBy: orderBy,
+      manifestationStatus: manifestationStatus,
+      city: city,
+      neighborhood: neighborhood,
+    );
+  }
 }

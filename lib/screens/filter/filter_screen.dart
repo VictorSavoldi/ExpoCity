@@ -1,14 +1,18 @@
 import 'package:expocity/components/custom_app_bar/custom_app_bar.dart';
 import 'package:expocity/components/custom_buttons/custom_elevated_button.dart';
+import 'package:expocity/screens/filter/components/city_filter_field.dart';
 import 'package:expocity/screens/filter/components/manifestation_status_field.dart';
+import 'package:expocity/screens/filter/components/neighborhood_filter_field.dart';
 import 'package:expocity/screens/filter/components/orderby_field.dart';
 import 'package:expocity/stores/filter_store.dart';
+import 'package:expocity/stores/home_store.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class FilterScreen extends StatelessWidget {
   FilterScreen({Key? key}) : super(key: key);
 
-  final FilterStore filter = FilterStore();
+  final FilterStore filter = GetIt.I<HomeStore>().clonedFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +30,18 @@ class FilterScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                CityFilterField(filter: filter),
+                NeighborhoodFilterField(filter: filter),
                 OrderByField(filter: filter),
                 ManifestationStatusField(filter: filter),
                 const SizedBox(height: 10),
                 const Divider(color: Colors.black54),
                 CustomElevatedButton(
                   edgeInsets: const EdgeInsets.only(top: 10),
-                  onPressed: null,
+                  onPressed: () async {
+                    filter.save();
+                    Navigator.of(context).pop();
+                  },
                   containerActionButton: Container(
                     alignment: Alignment.center,
                     child: const Text('FILTRAR'),
