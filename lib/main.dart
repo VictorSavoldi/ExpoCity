@@ -2,9 +2,11 @@ import 'package:expocity/repositories/application_keys.dart';
 import 'package:expocity/screens/base/base_screen.dart';
 import 'package:expocity/stores/category_store.dart';
 import 'package:expocity/stores/city_store.dart';
+import 'package:expocity/stores/home_store.dart';
 import 'package:expocity/stores/page_store.dart';
 import 'package:expocity/stores/user_manager_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -19,6 +21,7 @@ void main() async {
 
 void setupLocators() {
   GetIt.I.registerSingleton<PageStore>(PageStore());
+  GetIt.I.registerSingleton<HomeStore>(HomeStore());
   GetIt.I.registerSingleton<UserManagerStore>(UserManagerStore());
   GetIt.I.registerSingleton<CategoryStore>(CategoryStore());
   GetIt.I.registerSingleton<CityStore>(CityStore());
@@ -41,7 +44,7 @@ class MyApp extends StatelessWidget {
         canvasColor: Colors.transparent,
         primaryColor: defaultColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: backgoundColor,
+        scaffoldBackgroundColor: backgroundColor,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: defaultColor,
         ),
@@ -58,6 +61,14 @@ class MyApp extends StatelessWidget {
           color: defaultColor,
         ),
       ),
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
       home: BaseScreen(),
     );
   }

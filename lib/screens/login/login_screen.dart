@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'Entrar',
+          title: const Text('Entrar'),
         ),
         body: Container(
           alignment: Alignment.center,
@@ -47,7 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Card(
               margin: const EdgeInsets.symmetric(horizontal: 25),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                borderRadius: BorderRadius.circular(20),
+              ),
               elevation: 8,
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -147,9 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     }),
-                    const Divider(
-                      color: Colors.black54,
-                    ),
+                    const Divider(color: Colors.black54),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Wrap(

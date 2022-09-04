@@ -59,7 +59,16 @@ class UserRepository {
     return User.getDataBase(
       id: parseUser.get(keyUserId),
       name: parseUser.get(keyUserName),
+      userType: UserType.values[parseUser.get(keyUserType)],
+      createdAt: parseUser.get(keyUserCreatedAt),
       email: parseUser.get(keyUserEmail),
+    );
+  }
+
+  User mapParseToUserManifestation(ParseUser parseUser) {
+    return User.getDataBaseManifestation(
+      id: parseUser.get(keyUserId),
+      name: parseUser.get(keyUserName),
       userType: UserType.values[parseUser.get(keyUserType)],
       createdAt: parseUser.get(keyUserCreatedAt),
     );

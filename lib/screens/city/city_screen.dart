@@ -21,7 +21,7 @@ class CityScreen extends StatelessWidget {
     final node = FocusScope.of(context);
 
     return Scaffold(
-      appBar: CustomAppBar(title: 'Cidades'),
+      appBar: CustomAppBar(title: const Text('Cidades')),
       body: Container(
         alignment: Alignment.center,
         child: SingleChildScrollView(

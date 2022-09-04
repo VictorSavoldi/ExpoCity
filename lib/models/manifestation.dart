@@ -25,8 +25,8 @@ class Manifestation {
     status =
         ManifestationStatus.values[object.get<int>(keyManifestationStatus)!];
 
-    user = UserRepository()
-        .mapParseToUser(object.get<ParseUser>(keyManifestationOwner)!);
+    user = UserRepository().mapParseToUserManifestation(
+        object.get<ParseUser>(keyManifestationOwner)!);
 
     category =
         Category.fromParse(object.get<ParseObject>(keyManifestationCategory)!);
