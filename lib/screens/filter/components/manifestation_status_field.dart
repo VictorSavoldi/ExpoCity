@@ -59,7 +59,7 @@ class ManifestationStatusField extends StatelessWidget {
             runSpacing: 5,
             children: [
               buildOption(
-                title: 'Ativo',
+                title: 'Ativa',
                 statusType: filter.isStatusActive,
                 onTap: () {
                   if (filter.isStatusActive) {
@@ -77,7 +77,7 @@ class ManifestationStatusField extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               buildOption(
-                title: 'Resolvido',
+                title: 'Resolvida',
                 statusType: filter.isStatusResolved,
                 onTap: () {
                   if (filter.isStatusResolved) {

@@ -16,13 +16,6 @@ mixin _$FilterStore on _FilterStore, Store {
       (_$isStatusActiveComputed ??= Computed<bool>(() => super.isStatusActive,
               name: '_FilterStore.isStatusActive'))
           .value;
-  Computed<bool>? _$isStatusResolvedComputed;
-
-  @override
-  bool get isStatusResolved => (_$isStatusResolvedComputed ??= Computed<bool>(
-          () => super.isStatusResolved,
-          name: '_FilterStore.isStatusResolved'))
-      .value;
 
   late final _$orderByAtom =
       Atom(name: '_FilterStore.orderBy', context: context);
@@ -102,69 +95,13 @@ mixin _$FilterStore on _FilterStore, Store {
   }
 
   @override
-  void setNeighborhood(Neighborhood value) {
-    final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.setNeighborhood');
-    try {
-      return super.setNeighborhood(value);
-    } finally {
-      _$_FilterStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setOrderBy(OrderBy value) {
-    final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.setOrderBy');
-    try {
-      return super.setOrderBy(value);
-    } finally {
-      _$_FilterStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void selectManifestationStatus(int value) {
-    final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.selectManifestationStatus');
-    try {
-      return super.selectManifestationStatus(value);
-    } finally {
-      _$_FilterStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setManifestationStatus(int status) {
-    final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.setManifestationStatus');
-    try {
-      return super.setManifestationStatus(status);
-    } finally {
-      _$_FilterStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void resetManifestationStatus(int status) {
-    final _$actionInfo = _$_FilterStoreActionController.startAction(
-        name: '_FilterStore.resetManifestationStatus');
-    try {
-      return super.resetManifestationStatus(status);
-    } finally {
-      _$_FilterStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 orderBy: ${orderBy},
 manifestationStatus: ${manifestationStatus},
 city: ${city},
 neighborhood: ${neighborhood},
-isStatusActive: ${isStatusActive},
-isStatusResolved: ${isStatusResolved}
+isStatusActive: ${isStatusActive}
     ''';
   }
 }

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension StringExtension on String {
   bool isEmailValid() {
     final RegExp regex = RegExp(
@@ -19,5 +21,11 @@ extension StringExtension on String {
         r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$");
 
     return regex.hasMatch(this);
+  }
+}
+
+extension DateTimeExtension on DateTime {
+  String formattedDate() {
+    return DateFormat('dd/MM/yyyy', 'pt-BR').format(this);
   }
 }

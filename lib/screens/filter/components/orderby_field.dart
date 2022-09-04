@@ -63,7 +63,7 @@ class OrderByField extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               buildOption(
-                title: 'Mais Antigo',
+                title: 'Mais Antiga',
                 option: OrderBy.OLD,
               ),
             ],

@@ -13,6 +13,7 @@ class ManifestationRepository {
     FilterStore? filter,
     String? search,
     Category? category,
+    required int page,
   }) async {
     final queryBuilder =
         QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
@@ -22,6 +23,7 @@ class ManifestationRepository {
             keyManifestationCategory,
             keyManifestationNeighborhood,
           ])
+          ..setAmountToSkip(page * 20)
           ..setLimit(20);
 
     if (filter!.city != null) {
@@ -43,27 +45,38 @@ class ManifestationRepository {
               .toPointer());
     }
 
+    if (filter.neighborhood != null && filter.neighborhood!.id != '*') {
+      queryBuilder.whereEqualTo(
+          keyManifestationNeighborhood,
+          (ParseObject(keyNeighborhoodTable)
+                ..set(keyNeighborhoodId, filter.neighborhood!.id))
+              .toPointer());
+    }
+
     switch (filter.orderBy) {
       case OrderBy.OLD:
-        queryBuilder.orderByDescending(keyManifestationCreatedAt);
+        queryBuilder.orderByAscending(keyManifestationCreatedAt);
         break;
       case OrderBy.RECENT:
       default:
-        queryBuilder.orderByAscending(keyManifestationCreatedAt);
+        queryBuilder.orderByDescending(keyManifestationCreatedAt);
         break;
     }
 
-    if (filter.manifestationStatus > 0 &&
-        filter.manifestationStatus <
-            (MANIFESTATION_STATUS_RESOLVED | MANIFESTATION_STATUS_ACTIVE)) {
-      if (filter.manifestationStatus == MANIFESTATION_STATUS_ACTIVE) {
-        queryBuilder.whereEqualTo(
-            keyManifestationStatus, ManifestationStatus.ACTIVE.index);
-      }
-      if (filter.manifestationStatus == MANIFESTATION_STATUS_RESOLVED) {
-        queryBuilder.whereEqualTo(
-            keyManifestationStatus, ManifestationStatus.RESOLVED.index);
-      }
+    if (filter.manifestationStatus == MANIFESTATION_STATUS_ACTIVE) {
+      queryBuilder.whereEqualTo(
+          keyManifestationStatus, ManifestationStatus.ACTIVE.index);
+    }
+
+    if (filter.manifestationStatus == MANIFESTATION_STATUS_RESOLVED) {
+      queryBuilder.whereEqualTo(
+          keyManifestationStatus, ManifestationStatus.RESOLVED.index);
+    }
+
+    if (filter.manifestationStatus ==
+        (MANIFESTATION_STATUS_ACTIVE | MANIFESTATION_STATUS_RESOLVED)) {
+      queryBuilder.whereNotEqualTo(
+          keyManifestationStatus, ManifestationStatus.DELETED.index);
     }
 
     final response = await queryBuilder.query();

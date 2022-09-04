@@ -45,6 +45,10 @@ dependencies:
   shared_preferences: ^2.0.15
   path: any
   bordered_text: 2.0.0
+  cached_network_image: any
+  intl: ^0.17.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
