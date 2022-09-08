@@ -50,7 +50,7 @@ class _CreateScreenState extends State<CreateScreen> {
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Card(
-            margin: const EdgeInsets.all(25),
+            margin: const EdgeInsets.all(20),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 8,
@@ -102,6 +102,7 @@ class _CreateScreenState extends State<CreateScreen> {
                             maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             keyboardType: TextInputType.text,
                             textCapitalization: TextCapitalization.sentences,
+                            textInputAction: TextInputAction.next,
                           );
                         }),
                         const SizedBox(height: 20),
@@ -119,7 +120,7 @@ class _CreateScreenState extends State<CreateScreen> {
                             maxLength: 300,
                             maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             maxLines: null,
-                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.newline,
                             textCapitalization: TextCapitalization.sentences,
                           );
                         }),
