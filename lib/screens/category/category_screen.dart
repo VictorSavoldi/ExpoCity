@@ -21,7 +21,7 @@ class CategoryScreen extends StatelessWidget {
     final node = FocusScope.of(context);
 
     return Scaffold(
-      appBar: CustomAppBar(title: 'Categorias'),
+      appBar: CustomAppBar(title: const Text('Categorias')),
       body: Center(
         child: Card(
           shape: RoundedRectangleBorder(

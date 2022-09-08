@@ -48,6 +48,8 @@ abstract class _LoginStore with Store {
       errorText = e.toString();
     }
 
+    errorText = '';
+
     loading = false;
   }
 

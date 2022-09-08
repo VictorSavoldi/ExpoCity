@@ -15,7 +15,7 @@ class ImageSourceModal extends StatelessWidget {
     return BottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      backgroundColor: backgoundColor,
+      backgroundColor: backgroundColor,
       onClosing: () {},
       builder: (_) => Container(
         decoration: BoxDecoration(

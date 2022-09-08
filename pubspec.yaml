@@ -43,6 +43,14 @@ dependencies:
   image_cropper: ^3.0.0
   new_gradient_app_bar: ^0.2.0
   shared_preferences: ^2.0.15
+  path: any
+  bordered_text: 2.0.0
+  cached_network_image: any
+  intl: ^0.17.0
+  flutter_localizations:
+    sdk: flutter
+  carousel_slider: ^4.1.1
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_test:

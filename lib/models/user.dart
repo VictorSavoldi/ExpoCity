@@ -15,6 +15,13 @@ class User {
       required this.userType,
       required this.createdAt});
 
+  User.getDataBaseManifestation(
+      {required this.id,
+      required this.name,
+      this.email = '',
+      required this.userType,
+      required this.createdAt});
+
   String? id;
   String name;
   String email;
