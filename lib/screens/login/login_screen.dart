@@ -90,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             errorText: loginStore.emailError),
                         keyboardType: TextInputType.emailAddress,
                         onChanged: loginStore.setEmail,
+                        textInputAction: TextInputAction.next,
                       );
                     }),
                     const SizedBox(
