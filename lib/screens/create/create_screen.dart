@@ -2,6 +2,7 @@ import 'package:expocity/components/colors.dart';
 import 'package:expocity/components/custom_buttons/custom_elevated_button.dart';
 import 'package:expocity/components/custom_drawer/custom_drawer.dart';
 import 'package:expocity/components/error_box.dart';
+import 'package:expocity/models/manifestation.dart';
 import 'package:expocity/screens/create/components/category_field.dart';
 import 'package:expocity/screens/create/components/city_field.dart';
 import 'package:expocity/screens/create/components/hide_name_field.dart';
@@ -18,21 +19,30 @@ import 'package:mobx/mobx.dart';
 import '../../components/custom_app_bar/custom_app_bar.dart';
 
 class CreateScreen extends StatefulWidget {
-  CreateScreen({Key? key}) : super(key: key);
+  const CreateScreen({Key? key, this.manifestation}) : super(key: key);
+
+  final Manifestation? manifestation;
 
   @override
-  State<CreateScreen> createState() => _CreateScreenState();
+  State<CreateScreen> createState() => _CreateScreenState(manifestation);
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final CreateStore createStore = CreateStore();
+  _CreateScreenState(Manifestation? manifestation)
+      : editing = manifestation != null,
+        createStore = CreateStore(manifestation ?? Manifestation());
+
+  bool editing;
+  final CreateStore createStore;
 
   @override
   void initState() {
     super.initState();
 
     when((_) => createStore.savedManifestation, () {
-      GetIt.I<PageStore>().setPage(0);
+      editing
+          ? Navigator.of(context).pop(true)
+          : GetIt.I<PageStore>().setPage(0);
     });
   }
 
@@ -44,8 +54,11 @@ class _CreateScreenState extends State<CreateScreen> {
     const contentPadding = EdgeInsets.symmetric(vertical: 18, horizontal: 12);
 
     return Scaffold(
-      drawer: const CustomDrawer(),
-      appBar: CustomAppBar(title: const Text('Cadastrar Manifestação')),
+      drawer: editing ? null : const CustomDrawer(),
+      appBar: CustomAppBar(
+          title: editing
+              ? const Text('Editar Manifestação')
+              : const Text('Cadastrar Manifestação')),
       body: Container(
         alignment: Alignment.center,
         child: SingleChildScrollView(
@@ -89,6 +102,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         const SizedBox(height: 20),
                         Observer(builder: (_) {
                           return TextFormField(
+                            initialValue: createStore.title,
                             enabled: !createStore.loading,
                             onChanged: createStore.setTitle,
                             decoration: InputDecoration(
@@ -108,6 +122,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         const SizedBox(height: 20),
                         Observer(builder: (_) {
                           return TextFormField(
+                            initialValue: createStore.description,
                             enabled: !createStore.loading,
                             onChanged: createStore.setDescription,
                             decoration: InputDecoration(
@@ -133,6 +148,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         const SizedBox(height: 20),
                         Observer(builder: (_) {
                           return TextFormField(
+                            initialValue: createStore.street,
                             enabled: !createStore.loading,
                             onChanged: createStore.setStreet,
                             decoration: InputDecoration(

@@ -106,6 +106,10 @@ class ManifestationRepository {
       parseAcl.setPublicWriteAccess(allowed: false);
       manifestationObject.setACL(parseAcl);
 
+      if (manifestation.id != null) {
+        manifestationObject.set<String>(keyManifestationId, manifestation.id!);
+      }
+
       manifestationObject.set<String>(
           keyManifestationTitle, manifestation.title);
 
@@ -129,15 +133,15 @@ class ManifestationRepository {
       manifestationObject.set<ParseObject>(
           keyManifestationCategory,
           ParseObject(keyCategoryTable)
-            ..set(keyCategoryId, manifestation.category.id));
+            ..set(keyCategoryId, manifestation.category!.id));
 
       manifestationObject.set<ParseObject>(keyManifestationCity,
-          ParseObject(keyCityTable)..set(keyCityId, manifestation.city.id));
+          ParseObject(keyCityTable)..set(keyCityId, manifestation.city!.id));
 
       manifestationObject.set<ParseObject>(
           keyManifestationNeighborhood,
           ParseObject(keyNeighborhoodTable)
-            ..set(keyNeighborhoodId, manifestation.neighborhood.id));
+            ..set(keyNeighborhoodId, manifestation.neighborhood!.id));
 
       final response = await manifestationObject.save();
 
@@ -155,22 +159,18 @@ class ManifestationRepository {
 
     try {
       for (final image in images) {
-        if (image is File) {
+        if (image is String) {
+          final parseFile = ParseFile(File(path.basename(image)));
+          parseFile.name = path.basename(image);
+          parseFile.url = image;
+          parseImages.add(parseFile);
+        } else {
           final parseFile = ParseFile(image, name: path.basename(image.path));
-
           final response = await parseFile.save();
-
           if (!response.success) {
             return Future.error(
                 ParseErrors.getDescription(response.error!.code).toString());
           }
-
-          parseImages.add(parseFile);
-        } else {
-          final parseFile = ParseFile(null);
-
-          parseFile.name = path.basename(image);
-          parseFile.url = image;
           parseImages.add(parseFile);
         }
       }
@@ -186,7 +186,7 @@ class ManifestationRepository {
     final queryBuilder =
         QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
           ..setLimit(100)
-          ..orderByAscending(keyManifestationCreatedAt)
+          ..orderByDescending(keyManifestationCreatedAt)
           ..whereEqualTo(keyManifestationOwner, currentUser.toPointer())
           ..includeObject([
             keyManifestationOwner,

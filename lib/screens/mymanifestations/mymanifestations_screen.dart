@@ -49,29 +49,34 @@ class _MymanifestationsScreenState extends State<MymanifestationsScreen>
             ),
           ),
           Expanded(
-              child: TabBarView(
-            controller: tabController,
-            children: [
-              Observer(builder: (_) {
-                if (store.activeManifestations.isEmpty) {
-                  return Container();
-                }
-                return ListView.builder(itemBuilder: (_, index) {
-                  return ActiveTile(
-                      manifestation: store.activeManifestations[index]);
-                });
-              }),
-              Observer(builder: (_) {
-                if (store.resolvedManifestations.isEmpty) {
-                  return Container();
-                }
-                return ListView.builder(itemBuilder: (_, index) {
-                  return ResolvedTile(
-                      manifestation: store.resolvedManifestations[index]);
-                });
-              }),
-            ],
-          ))
+            child: TabBarView(
+              controller: tabController,
+              children: [
+                Observer(builder: (_) {
+                  if (store.activeManifestations.isEmpty) {
+                    return Container();
+                  }
+                  return ListView.builder(
+                      itemCount: store.activeManifestations.length,
+                      itemBuilder: (_, index) {
+                        return ActiveTile(
+                            manifestation: store.activeManifestations[index]);
+                      });
+                }),
+                Observer(builder: (_) {
+                  if (store.resolvedManifestations.isEmpty) {
+                    return Container();
+                  }
+                  return ListView.builder(
+                      itemCount: store.resolvedManifestations.length,
+                      itemBuilder: (_, index) {
+                        return ResolvedTile(
+                            manifestation: store.resolvedManifestations[index]);
+                      });
+                }),
+              ],
+            ),
+          )
         ],
       ),
     );

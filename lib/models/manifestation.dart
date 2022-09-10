@@ -36,16 +36,16 @@ class Manifestation {
     street = object.get<String>(keyManifestationStreet)!;
   }
 
-  late List images;
+  List images = [];
 
-  late String id;
-  late String title;
-  late String description;
-  late String street;
+  String? id;
+  String title = '';
+  String description = '';
+  String street = '';
 
-  late Category category;
-  late City city;
-  late Neighborhood neighborhood;
+  Category? category;
+  City? city;
+  Neighborhood? neighborhood;
 
   bool hidName = false;
 

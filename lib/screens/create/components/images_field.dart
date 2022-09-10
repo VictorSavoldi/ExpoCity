@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expocity/components/colors.dart';
 import 'package:expocity/screens/create/components/image_dialog.dart';
 import 'package:expocity/screens/create/components/image_source_modal.dart';
@@ -14,7 +15,7 @@ class ImagesField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onImageSelected(File image) {
+    void _onImageSelected(File image) {
       createStore.images.add(image);
       Navigator.of(context).pop();
     }
@@ -51,7 +52,7 @@ class ImagesField extends StatelessWidget {
                               showModalBottomSheet(
                                 context: context,
                                 builder: (_) =>
-                                    ImageSourceModal(onImageSelected),
+                                    ImageSourceModal(_onImageSelected),
                               );
                             }
                           : null,
@@ -85,7 +86,10 @@ class ImagesField extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (_) => ImageDialog(
-                            image: createStore.images[index],
+                            image: createStore.images[index] is File
+                                ? FileImage(createStore.images[index])
+                                : CachedNetworkImageProvider(
+                                    createStore.images[index]) as ImageProvider,
                             onDelete: () async =>
                                 await createStore.images.removeAt(index),
                           ),
@@ -96,7 +100,10 @@ class ImagesField extends StatelessWidget {
                         backgroundColor: Colors.black12,
                         child: CircleAvatar(
                           radius: 43,
-                          backgroundImage: FileImage(createStore.images[index]),
+                          backgroundImage: createStore.images[index] is File
+                              ? FileImage(createStore.images[index])
+                              : CachedNetworkImageProvider(
+                                  createStore.images[index]) as ImageProvider,
                         ),
                       ),
                     ),
