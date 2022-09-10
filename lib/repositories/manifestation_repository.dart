@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:expocity/models/category.dart';
 import 'package:expocity/models/manifestation.dart';
+import 'package:expocity/models/user.dart';
 import 'package:expocity/repositories/parse_errors.dart';
 import 'package:expocity/repositories/table_keys.dart';
 import 'package:expocity/stores/filter_store.dart';
@@ -177,6 +178,34 @@ class ManifestationRepository {
       return parseImages;
     } catch (e) {
       return Future.error('Falha ao salvar imagens.');
+    }
+  }
+
+  Future<List<Manifestation>> getMyManifestations(User user) async {
+    final currentUser = ParseUser('', '', '')..set(keyUserId, user.id);
+    final queryBuilder =
+        QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
+          ..setLimit(100)
+          ..orderByAscending(keyManifestationCreatedAt)
+          ..whereEqualTo(keyManifestationOwner, currentUser.toPointer())
+          ..includeObject([
+            keyManifestationOwner,
+            keyManifestationCity,
+            keyManifestationCategory,
+            keyManifestationNeighborhood,
+          ]);
+
+    final response = await queryBuilder.query();
+
+    if (response.success && response.results == null) {
+      return [];
+    } else if (response.success) {
+      return response.results!
+          .map((po) => Manifestation.fromParse(po))
+          .toList();
+    } else {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 }

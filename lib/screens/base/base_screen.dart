@@ -1,3 +1,4 @@
+import 'package:expocity/screens/account/account_screen.dart';
 import 'package:expocity/screens/create/create_screen.dart';
 import 'package:expocity/stores/page_store.dart';
 import 'package:flutter/material.dart';
@@ -36,9 +37,7 @@ class _BaseScreenState extends State<BaseScreen> {
           children: [
             HomeScreen(),
             CreateScreen(),
-            Container(
-              color: Colors.yellow,
-            ),
+            AccountScreen(),
           ],
         ),
       ),

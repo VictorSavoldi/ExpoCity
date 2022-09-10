@@ -44,13 +44,13 @@ class MainPanel extends StatelessWidget {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 24, bottom: 14),
           child: Text(
             manifestation.title,
-            textAlign: TextAlign.justify,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,

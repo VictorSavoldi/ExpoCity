@@ -1,4 +1,5 @@
 import 'package:expocity/components/custom_drawer/page_tile.dart';
+import 'package:expocity/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -32,23 +33,28 @@ class PageSection extends StatelessWidget {
           },
           highlighted: pageStore.page == 1,
         ),
-        PageTile(
-          label: 'Minha Conta',
-          iconData: Icons.person,
-          onTap: () {
-            pageStore.setPage(2);
-          },
-          highlighted: pageStore.page == 2,
-        ),
-        PageTile(
-          label: 'Sair',
-          iconData: Icons.logout,
-          onTap: () {
-            store.logout();
-            pageStore.setPage(0);
-          },
-          highlighted: false,
-        ),
+        GetIt.I<UserManagerStore>().isLoggedin
+            ? PageTile(
+                label: 'Minha Conta',
+                iconData: Icons.person,
+                onTap: () {
+                  pageStore.setPage(2);
+                },
+                highlighted: pageStore.page == 2,
+              )
+            : Container(),
+        GetIt.I<UserManagerStore>().isLoggedin
+            ? PageTile(
+                label: 'Sair',
+                iconData: Icons.logout,
+                onTap: () {
+                  store.logout();
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => HomeScreen()));
+                },
+                highlighted: false,
+              )
+            : Container(),
       ],
     );
   }
