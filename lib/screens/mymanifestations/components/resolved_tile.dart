@@ -5,11 +5,14 @@ import 'package:expocity/screens/manifestation/manifestation_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/colors.dart';
+import '../../../stores/mymanifestations_store.dart';
 
 class ResolvedTile extends StatelessWidget {
-  ResolvedTile({Key? key, required this.manifestation}) : super(key: key);
+  ResolvedTile({Key? key, required this.manifestation, required this.store})
+      : super(key: key);
 
   final Manifestation manifestation;
+  final MymanifestationsStore store;
 
   final List<MenuChoice2> choices = [
     MenuChoice2(index: 0, title: 'Ativa', iconData: Icons.thumb_down),
@@ -87,8 +90,10 @@ class ResolvedTile extends StatelessWidget {
                       onSelected: (choices) {
                         switch (choices.index) {
                           case 0:
+                            _activeManifestation(context: context);
                             break;
                           case 1:
+                            _deletedManifestation(context: context);
                             break;
                         }
                       },
@@ -127,6 +132,70 @@ class ResolvedTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _activeManifestation({required BuildContext context}) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              elevation: 8,
+              title: Text('Manifestação Ativa'),
+              content: Text(
+                'Alterar o status da manifestação: "${manifestation.title}" para ativa?',
+                style: const TextStyle(fontSize: 16),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text(
+                    'Não',
+                    style: TextStyle(color: defaultColor, fontSize: 17),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    store.activeManifestation(manifestation: manifestation);
+                  },
+                  child: const Text(
+                    'Sim',
+                    style: TextStyle(color: errorColor, fontSize: 17),
+                  ),
+                ),
+              ],
+            ));
+  }
+
+  Future<void> _deletedManifestation({required BuildContext context}) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              elevation: 8,
+              title: const Text('Deletar Manifestação'),
+              content: Text(
+                'Vocrê realmente deseja deletar a manifestação: "${manifestation.title}"?',
+                style: const TextStyle(fontSize: 16),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text(
+                    'Não',
+                    style: TextStyle(color: defaultColor, fontSize: 17),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    store.deleteManifestation(manifestation: manifestation);
+                  },
+                  child: const Text(
+                    'Sim',
+                    style: TextStyle(color: errorColor, fontSize: 17),
+                  ),
+                ),
+              ],
+            ));
   }
 }
 

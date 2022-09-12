@@ -26,6 +26,22 @@ mixin _$MymanifestationsStore on _MymanifestationsStore, Store {
               name: '_MymanifestationsStore.resolvedManifestations'))
           .value;
 
+  late final _$loadingAtom =
+      Atom(name: '_MymanifestationsStore.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
   late final _$allManifestationsAtom =
       Atom(name: '_MymanifestationsStore.allManifestations', context: context);
 
@@ -42,9 +58,40 @@ mixin _$MymanifestationsStore on _MymanifestationsStore, Store {
     });
   }
 
+  late final _$resolveManifestationAsyncAction = AsyncAction(
+      '_MymanifestationsStore.resolveManifestation',
+      context: context);
+
+  @override
+  Future<void> resolveManifestation({required Manifestation manifestation}) {
+    return _$resolveManifestationAsyncAction
+        .run(() => super.resolveManifestation(manifestation: manifestation));
+  }
+
+  late final _$activeManifestationAsyncAction = AsyncAction(
+      '_MymanifestationsStore.activeManifestation',
+      context: context);
+
+  @override
+  Future<void> activeManifestation({required Manifestation manifestation}) {
+    return _$activeManifestationAsyncAction
+        .run(() => super.activeManifestation(manifestation: manifestation));
+  }
+
+  late final _$deleteManifestationAsyncAction = AsyncAction(
+      '_MymanifestationsStore.deleteManifestation',
+      context: context);
+
+  @override
+  Future<void> deleteManifestation({required Manifestation manifestation}) {
+    return _$deleteManifestationAsyncAction
+        .run(() => super.deleteManifestation(manifestation: manifestation));
+  }
+
   @override
   String toString() {
     return '''
+loading: ${loading},
 allManifestations: ${allManifestations},
 activeManifestations: ${activeManifestations},
 resolvedManifestations: ${resolvedManifestations}

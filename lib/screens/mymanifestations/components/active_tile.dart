@@ -2,15 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expocity/helpers/extensions.dart';
 import 'package:expocity/models/manifestation.dart';
 import 'package:expocity/screens/create/create_screen.dart';
+import 'package:expocity/stores/mymanifestations_store.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/colors.dart';
 import '../../manifestation/manifestation_screen.dart';
 
 class ActiveTile extends StatelessWidget {
-  ActiveTile({Key? key, required this.manifestation}) : super(key: key);
+  ActiveTile({Key? key, required this.manifestation, required this.store})
+      : super(key: key);
 
   final Manifestation manifestation;
+  final MymanifestationsStore store;
 
   final List<MenuChoice> choices = [
     MenuChoice(index: 0, title: 'Editar', iconData: Icons.edit),
@@ -92,8 +95,10 @@ class ActiveTile extends StatelessWidget {
                             _editManifestation(context: context);
                             break;
                           case 1:
+                            _resolvedManifestation(context: context);
                             break;
                           case 2:
+                            _deletedManifestation(context: context);
                             break;
                         }
                       },
@@ -135,8 +140,76 @@ class ActiveTile extends StatelessWidget {
   }
 
   Future<void> _editManifestation({required BuildContext context}) async {
-    Navigator.of(context).push(MaterialPageRoute(
+    final success = await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => CreateScreen(manifestation: manifestation)));
+
+    if (success != null && success) {
+      store.refresh();
+    }
+  }
+
+  Future<void> _resolvedManifestation({required BuildContext context}) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              elevation: 8,
+              title: const Text('Manifestação Resolvida'),
+              content: Text(
+                'Alterar o status da manifestação: "${manifestation.title}" para resolvida?',
+                style: const TextStyle(fontSize: 16),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text(
+                    'Não',
+                    style: TextStyle(color: errorColor, fontSize: 17),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    store.resolveManifestation(manifestation: manifestation);
+                  },
+                  child: const Text(
+                    'Sim',
+                    style: TextStyle(color: defaultColor, fontSize: 17),
+                  ),
+                ),
+              ],
+            ));
+  }
+
+  Future<void> _deletedManifestation({required BuildContext context}) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              elevation: 8,
+              title: const Text('Deletar Manifestação'),
+              content: Text(
+                'Vocrê realmente deseja deletar a manifestação: "${manifestation.title}"?',
+                style: const TextStyle(fontSize: 16),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: const Text(
+                    'Não',
+                    style: TextStyle(color: defaultColor, fontSize: 17),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    store.deleteManifestation(manifestation: manifestation);
+                  },
+                  child: const Text(
+                    'Sim',
+                    style: TextStyle(color: errorColor, fontSize: 17),
+                  ),
+                ),
+              ],
+            ));
   }
 }
 

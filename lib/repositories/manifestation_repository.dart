@@ -208,4 +208,43 @@ class ManifestationRepository {
           ParseErrors.getDescription(response.error!.code).toString());
     }
   }
+
+  Future<void> resolve(Manifestation manifestation) async {
+    final parseObject = ParseObject(keyManifestationTable)
+      ..set(keyManifestationId, manifestation.id)
+      ..set(keyManifestationStatus, ManifestationStatus.RESOLVED.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+  }
+
+  Future<void> active(Manifestation manifestation) async {
+    final parseObject = ParseObject(keyManifestationTable)
+      ..set(keyManifestationId, manifestation.id)
+      ..set(keyManifestationStatus, ManifestationStatus.ACTIVE.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+  }
+
+  Future<void> delete(Manifestation manifestation) async {
+    final parseObject = ParseObject(keyManifestationTable)
+      ..set(keyManifestationId, manifestation.id)
+      ..set(keyManifestationStatus, ManifestationStatus.DELETED.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+  }
 }

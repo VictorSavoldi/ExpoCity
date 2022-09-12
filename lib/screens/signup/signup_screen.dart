@@ -51,6 +51,7 @@ class SignUpScreen extends StatelessWidget {
                         onChanged: signupStore.setName,
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.next,
                       );
                     }),
                     const SizedBox(
@@ -71,6 +72,7 @@ class SignUpScreen extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress,
                         autocorrect: false,
                         onChanged: signupStore.setEmail,
+                        textInputAction: TextInputAction.next,
                       );
                     }),
                     const SizedBox(
@@ -90,6 +92,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         obscureText: true,
                         onChanged: signupStore.setPass1,
+                        textInputAction: TextInputAction.next,
                       );
                     }),
                     const SizedBox(

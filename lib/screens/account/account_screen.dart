@@ -1,9 +1,11 @@
 import 'package:expocity/components/colors.dart';
 import 'package:expocity/components/custom_app_bar/custom_app_bar.dart';
 import 'package:expocity/components/custom_drawer/custom_drawer.dart';
+import 'package:expocity/screens/edit_account/edit_account_screen.dart';
 import 'package:expocity/screens/mymanifestations/mymanifestations_screen.dart';
 import 'package:expocity/stores/user_manager_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -36,13 +38,15 @@ class AccountScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const SizedBox(height: 15),
-                            Text(
-                              GetIt.I<UserManagerStore>().user!.name,
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: defaultColor,
-                                  fontWeight: FontWeight.w900),
-                            ),
+                            Observer(builder: (_) {
+                              return Text(
+                                GetIt.I<UserManagerStore>().user!.name,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: defaultColor,
+                                    fontWeight: FontWeight.w900),
+                              );
+                            }),
                             const SizedBox(height: 2),
                             Text(
                               GetIt.I<UserManagerStore>().user!.email,
@@ -57,12 +61,19 @@ class AccountScreen extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'Editar',
-                                style: TextStyle(
-                                    color: defaultColor, fontSize: 17),
-                              )),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => EditAccountScreen(
+                                      nameAccount: GetIt.I<UserManagerStore>()
+                                          .user!
+                                          .name)));
+                            },
+                            child: const Text(
+                              'Editar',
+                              style:
+                                  TextStyle(color: defaultColor, fontSize: 17),
+                            ),
+                          ),
                         ),
                       )
                     ],
@@ -84,7 +95,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => MymanifestationsScreen()));
+                        builder: (_) => const MymanifestationsScreen()));
                   },
                 ),
                 ListTile(
@@ -102,23 +113,6 @@ class AccountScreen extends StatelessWidget {
                   ),
                   onTap: () {},
                 ),
-                GetIt.I<UserManagerStore>().isUserAdmin
-                    ? ListTile(
-                        title: const Text(
-                          'Teste',
-                          style: TextStyle(
-                            color: defaultColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                        ),
-                        trailing: const Icon(
-                          Icons.keyboard_arrow_right,
-                          color: defaultColor,
-                        ),
-                        onTap: () {},
-                      )
-                    : Container(),
               ],
             ),
           ),

@@ -53,25 +53,84 @@ class _MymanifestationsScreenState extends State<MymanifestationsScreen>
               controller: tabController,
               children: [
                 Observer(builder: (_) {
-                  if (store.activeManifestations.isEmpty) {
-                    return Container();
+                  if (store.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(defaultColor),
+                      ),
+                    );
+                  }
+                  if (store.activeManifestations.isEmpty && !store.loading) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          Icon(
+                            Icons.list_alt,
+                            color: defaultColor,
+                            size: 100,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Você não possui manifestações ativas!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: defaultColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
+                          )
+                        ],
+                      ),
+                    );
                   }
                   return ListView.builder(
                       itemCount: store.activeManifestations.length,
                       itemBuilder: (_, index) {
                         return ActiveTile(
-                            manifestation: store.activeManifestations[index]);
+                            manifestation: store.activeManifestations[index],
+                            store: store);
                       });
                 }),
                 Observer(builder: (_) {
-                  if (store.resolvedManifestations.isEmpty) {
-                    return Container();
+                  if (store.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(defaultColor),
+                      ),
+                    );
+                  }
+                  if (store.resolvedManifestations.isEmpty && !store.loading) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          Icon(
+                            Icons.list_alt,
+                            color: defaultColor,
+                            size: 100,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Você não possui manifestações resolvidas!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: defaultColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
+                          )
+                        ],
+                      ),
+                    );
                   }
                   return ListView.builder(
                       itemCount: store.resolvedManifestations.length,
                       itemBuilder: (_, index) {
                         return ResolvedTile(
-                            manifestation: store.resolvedManifestations[index]);
+                          manifestation: store.resolvedManifestations[index],
+                          store: store,
+                        );
                       });
                 }),
               ],

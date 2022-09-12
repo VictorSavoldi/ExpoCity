@@ -15,6 +15,9 @@ abstract class _MymanifestationsStore with Store {
   }
 
   @observable
+  bool loading = false;
+
+  @observable
   List<Manifestation> allManifestations = [];
 
   @computed
@@ -33,8 +36,38 @@ abstract class _MymanifestationsStore with Store {
     final user = GetIt.I<UserManagerStore>().user;
 
     try {
+      loading = true;
+
       allManifestations =
           await ManifestationRepository().getMyManifestations(user!);
+
+      loading = false;
     } catch (e) {}
+  }
+
+  void refresh() => _getMyManifestations();
+
+  @action
+  Future<void> resolveManifestation(
+      {required Manifestation manifestation}) async {
+    loading = true;
+    await ManifestationRepository().resolve(manifestation);
+    refresh();
+  }
+
+  @action
+  Future<void> activeManifestation(
+      {required Manifestation manifestation}) async {
+    loading = true;
+    await ManifestationRepository().active(manifestation);
+    refresh();
+  }
+
+  @action
+  Future<void> deleteManifestation(
+      {required Manifestation manifestation}) async {
+    loading = true;
+    await ManifestationRepository().delete(manifestation);
+    refresh();
   }
 }

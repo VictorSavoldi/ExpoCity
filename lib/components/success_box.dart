@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-class ErrorBox extends StatelessWidget {
-  const ErrorBox({Key? key, required this.message}) : super(key: key);
+class SuccessBox extends StatelessWidget {
+  const SuccessBox({Key? key, required this.message}) : super(key: key);
 
   final String message;
 
@@ -16,14 +16,14 @@ class ErrorBox extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: errorColor,
+        color: successColor,
       ),
       padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(bottom: 15),
       child: Row(
         children: [
           const Icon(
-            Icons.error_outline,
+            Icons.check_circle_outline,
             color: Colors.white,
             size: 40,
           ),

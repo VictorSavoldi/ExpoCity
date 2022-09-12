@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: backgroundColor,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: defaultColor,
+          selectionHandleColor: defaultColor,
         ),
         inputDecorationTheme: const InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
