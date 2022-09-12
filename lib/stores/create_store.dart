@@ -12,6 +12,19 @@ part 'create_store.g.dart';
 class CreateStore = _CreateStore with _$CreateStore;
 
 abstract class _CreateStore with Store {
+  _CreateStore(this.manifestation) {
+    images = manifestation.images.asObservable();
+    title = manifestation.title;
+    description = manifestation.description;
+    category = manifestation.category;
+    city = manifestation.city;
+    neighborhood = manifestation.neighborhood;
+    street = manifestation.street;
+    hideName = manifestation.hidName;
+  }
+
+  final Manifestation manifestation;
+
   ObservableList images = ObservableList();
 
   @observable
@@ -152,8 +165,6 @@ abstract class _CreateStore with Store {
     loading = true;
 
     try {
-      final manifestation = Manifestation();
-
       manifestation.title = title;
       manifestation.description = description;
       manifestation.street = street;

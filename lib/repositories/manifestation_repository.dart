@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:expocity/models/category.dart';
 import 'package:expocity/models/manifestation.dart';
+import 'package:expocity/models/user.dart';
 import 'package:expocity/repositories/parse_errors.dart';
 import 'package:expocity/repositories/table_keys.dart';
 import 'package:expocity/stores/filter_store.dart';
@@ -105,6 +106,10 @@ class ManifestationRepository {
       parseAcl.setPublicWriteAccess(allowed: false);
       manifestationObject.setACL(parseAcl);
 
+      if (manifestation.id != null) {
+        manifestationObject.set<String>(keyManifestationId, manifestation.id!);
+      }
+
       manifestationObject.set<String>(
           keyManifestationTitle, manifestation.title);
 
@@ -128,15 +133,15 @@ class ManifestationRepository {
       manifestationObject.set<ParseObject>(
           keyManifestationCategory,
           ParseObject(keyCategoryTable)
-            ..set(keyCategoryId, manifestation.category.id));
+            ..set(keyCategoryId, manifestation.category!.id));
 
       manifestationObject.set<ParseObject>(keyManifestationCity,
-          ParseObject(keyCityTable)..set(keyCityId, manifestation.city.id));
+          ParseObject(keyCityTable)..set(keyCityId, manifestation.city!.id));
 
       manifestationObject.set<ParseObject>(
           keyManifestationNeighborhood,
           ParseObject(keyNeighborhoodTable)
-            ..set(keyNeighborhoodId, manifestation.neighborhood.id));
+            ..set(keyNeighborhoodId, manifestation.neighborhood!.id));
 
       final response = await manifestationObject.save();
 
@@ -154,22 +159,18 @@ class ManifestationRepository {
 
     try {
       for (final image in images) {
-        if (image is File) {
+        if (image is String) {
+          final parseFile = ParseFile(File(path.basename(image)));
+          parseFile.name = path.basename(image);
+          parseFile.url = image;
+          parseImages.add(parseFile);
+        } else {
           final parseFile = ParseFile(image, name: path.basename(image.path));
-
           final response = await parseFile.save();
-
           if (!response.success) {
             return Future.error(
                 ParseErrors.getDescription(response.error!.code).toString());
           }
-
-          parseImages.add(parseFile);
-        } else {
-          final parseFile = ParseFile(null);
-
-          parseFile.name = path.basename(image);
-          parseFile.url = image;
           parseImages.add(parseFile);
         }
       }
@@ -177,6 +178,73 @@ class ManifestationRepository {
       return parseImages;
     } catch (e) {
       return Future.error('Falha ao salvar imagens.');
+    }
+  }
+
+  Future<List<Manifestation>> getMyManifestations(User user) async {
+    final currentUser = ParseUser('', '', '')..set(keyUserId, user.id);
+    final queryBuilder =
+        QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
+          ..setLimit(100)
+          ..orderByDescending(keyManifestationCreatedAt)
+          ..whereEqualTo(keyManifestationOwner, currentUser.toPointer())
+          ..includeObject([
+            keyManifestationOwner,
+            keyManifestationCity,
+            keyManifestationCategory,
+            keyManifestationNeighborhood,
+          ]);
+
+    final response = await queryBuilder.query();
+
+    if (response.success && response.results == null) {
+      return [];
+    } else if (response.success) {
+      return response.results!
+          .map((po) => Manifestation.fromParse(po))
+          .toList();
+    } else {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+  }
+
+  Future<void> resolve(Manifestation manifestation) async {
+    final parseObject = ParseObject(keyManifestationTable)
+      ..set(keyManifestationId, manifestation.id)
+      ..set(keyManifestationStatus, ManifestationStatus.RESOLVED.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+  }
+
+  Future<void> active(Manifestation manifestation) async {
+    final parseObject = ParseObject(keyManifestationTable)
+      ..set(keyManifestationId, manifestation.id)
+      ..set(keyManifestationStatus, ManifestationStatus.ACTIVE.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+  }
+
+  Future<void> delete(Manifestation manifestation) async {
+    final parseObject = ParseObject(keyManifestationTable)
+      ..set(keyManifestationId, manifestation.id)
+      ..set(keyManifestationStatus, ManifestationStatus.DELETED.index);
+
+    final response = await parseObject.save();
+
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 }

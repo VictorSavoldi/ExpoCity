@@ -58,7 +58,7 @@ class ManifestationTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      manifestation.category.description,
+                      manifestation.category!.description,
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -66,8 +66,8 @@ class ManifestationTile extends StatelessWidget {
                     ),
                     Text(
                       '${manifestation.createdAt.formattedDate()} - '
-                      '${manifestation.city.name} - '
-                      '${manifestation.neighborhood.name}',
+                      '${manifestation.city!.name} - '
+                      '${manifestation.neighborhood!.name}',
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w300),
                     ),

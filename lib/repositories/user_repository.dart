@@ -21,6 +21,35 @@ class UserRepository {
     }
   }
 
+  Future<void> save(User user) async {
+    final ParseUser parseUser = await ParseUser.currentUser();
+
+    parseUser.set<String>(keyUserName, user.name);
+
+    if (user.password != null) {
+      parseUser.password = user.password;
+    }
+
+    final response = await parseUser.save();
+
+    if (!response.success) {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+
+    if (user.password != null) {
+      await parseUser.logout();
+
+      final loginResponse =
+          await ParseUser(user.email, user.password, user.email).login();
+
+      if (!loginResponse.success) {
+        return Future.error(
+            ParseErrors.getDescription(response.error!.code).toString());
+      }
+    }
+  }
+
   Future<User> loginWithEmail(String email, String password) async {
     final parseUser = ParseUser(email, password, null);
 

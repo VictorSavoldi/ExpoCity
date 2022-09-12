@@ -25,7 +25,7 @@ class CategoryPanel extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15),
           child: Text(
-            manifestation.category.description,
+            manifestation.category!.description,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,

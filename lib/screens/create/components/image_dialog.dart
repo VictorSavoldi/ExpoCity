@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:expocity/components/colors.dart';
 import 'package:expocity/components/custom_buttons/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,7 @@ class ImageDialog extends StatelessWidget {
   ImageDialog({Key? key, required this.image, required this.onDelete})
       : super(key: key);
 
-  final File? image;
+  final ImageProvider image;
   Future<void> Function() onDelete;
 
   @override
@@ -32,7 +30,7 @@ class ImageDialog extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
                 clipBehavior: Clip.antiAlias,
-                child: Image.file(File(image!.path)),
+                child: Image(image: image),
               ),
               CustomElevatedButton(
                 edgeInsets: const EdgeInsets.only(top: 20, bottom: 15),
