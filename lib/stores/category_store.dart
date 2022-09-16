@@ -1,5 +1,7 @@
 import 'package:expocity/models/category.dart';
 import 'package:expocity/repositories/category_repository.dart';
+import 'package:expocity/stores/connectivity_store.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 part 'category_store.g.dart';
@@ -7,8 +9,16 @@ part 'category_store.g.dart';
 class CategoryStore = _CategoryStore with _$CategoryStore;
 
 abstract class _CategoryStore with Store {
+  final ConnectivityStore connectivityStore = GetIt.I<ConnectivityStore>();
+
   _CategoryStore() {
-    _loadCategories();
+    autorun((_) {
+      connectivityStore.connected;
+      if (connectivityStore.connected && categoryList.isEmpty) {
+        errorText = '';
+        _loadCategories();
+      }
+    });
   }
 
   ObservableList<Category> categoryList = ObservableList<Category>();

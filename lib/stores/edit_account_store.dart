@@ -56,7 +56,7 @@ abstract class _EditAccountStore with Store {
       return;
     }
 
-    if (name == user.name) {
+    if (name == user.name && pass1.isEmpty) {
       return;
     }
 

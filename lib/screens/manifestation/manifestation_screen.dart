@@ -5,15 +5,19 @@ import 'package:expocity/screens/manifestation/components/category_panel.dart';
 import 'package:expocity/screens/manifestation/components/description_panel.dart';
 import 'package:expocity/screens/manifestation/components/location_panel.dart';
 import 'package:expocity/screens/manifestation/components/main_panel.dart';
+import 'package:expocity/stores/user_manager_store.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'components/user_panel.dart';
 
 class ManifestationScreen extends StatelessWidget {
-  const ManifestationScreen({Key? key, required this.manifestation})
+  ManifestationScreen({Key? key, required this.manifestation})
       : super(key: key);
 
   final Manifestation manifestation;
+
+  final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
 
   @override
   Widget build(BuildContext context) {

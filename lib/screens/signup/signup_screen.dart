@@ -1,17 +1,41 @@
+import 'package:expocity/screens/home/home_screen.dart';
 import 'package:expocity/screens/signup/components/field_title.dart';
 import 'package:expocity/stores/signup_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../components/colors.dart';
 import '../../components/custom_app_bar/custom_app_bar.dart';
 import '../../components/custom_buttons/custom_elevated_button.dart';
 import '../../components/error_box.dart';
+import '../../stores/user_manager_store.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final SignupStore signupStore = SignupStore();
+
+  final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    reaction((_) => userManagerStore.user != null, (u) {
+      if (u != null) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => HomeScreen(),
+        ));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

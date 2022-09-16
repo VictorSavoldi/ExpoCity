@@ -1,6 +1,8 @@
 import 'package:expocity/models/city.dart';
 import 'package:expocity/models/neighborhood.dart';
 import 'package:expocity/repositories/city_Repository.dart';
+import 'package:expocity/stores/connectivity_store.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 part 'city_store.g.dart';
@@ -8,9 +10,18 @@ part 'city_store.g.dart';
 class CityStore = _CityStore with _$CityStore;
 
 abstract class _CityStore with Store {
+  final ConnectivityStore connectivityStore = GetIt.I<ConnectivityStore>();
+
   _CityStore() {
-    _loadCities();
-    _loadNeighborhoods();
+    autorun((_) {
+      if (connectivityStore.connected &&
+          citylist.isEmpty &&
+          neighborhoodList.isEmpty) {
+        errorText = '';
+        _loadCities();
+        _loadNeighborhoods();
+      }
+    });
   }
 
   ObservableList<City> citylist = ObservableList<City>();
