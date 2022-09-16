@@ -1,5 +1,4 @@
 import 'package:expocity/helpers/extensions.dart';
-import 'package:expocity/models/user.dart';
 import 'package:expocity/stores/user_manager_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
@@ -42,14 +41,13 @@ abstract class _LoginStore with Store {
     loading = true;
 
     try {
-      GetIt.I<UserManagerStore>().setUser(
-          await UserRepository().loginWithEmail(_email, _password) as User);
+      GetIt.I<UserManagerStore>()
+          .setUser(await UserRepository().loginWithEmail(_email, _password));
+
+      errorText = '';
     } catch (e) {
       errorText = e.toString();
     }
-
-    errorText = '';
-
     loading = false;
   }
 

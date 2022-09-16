@@ -51,7 +51,7 @@ class LocationPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            manifestation.city.name,
+                            manifestation.city!.name,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
@@ -87,7 +87,7 @@ class LocationPanel extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            manifestation.neighborhood.name,
+                            manifestation.neighborhood!.name,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,

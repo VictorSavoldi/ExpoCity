@@ -23,6 +23,10 @@ abstract class _UserManagerStore with Store {
   @computed
   bool get isLoggedin => user != null;
 
+  @computed
+  bool get isUserAdmin =>
+      ((user != null) && (user!.userType == UserType.ADMINISTRADOR));
+
   // ignore: body_might_complete_normally_nullable
   Future<User?> _getCurrentUser() async {
     setUser(await UserRepository().currentUser());

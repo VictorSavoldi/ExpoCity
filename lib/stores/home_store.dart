@@ -1,7 +1,9 @@
 import 'package:expocity/models/category.dart';
 import 'package:expocity/models/manifestation.dart';
 import 'package:expocity/repositories/manifestation_repository.dart';
+import 'package:expocity/stores/connectivity_store.dart';
 import 'package:expocity/stores/filter_store.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 part 'home_store.g.dart';
@@ -9,8 +11,11 @@ part 'home_store.g.dart';
 class HomeStore = _HomeStore with _$HomeStore;
 
 abstract class _HomeStore with Store {
+  final ConnectivityStore connectivityStore = GetIt.I<ConnectivityStore>();
+
   _HomeStore() {
     autorun((_) async {
+      connectivityStore.connected;
       try {
         setLoading(true);
         final newManifestations = await ManifestationRepository()

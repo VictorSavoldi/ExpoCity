@@ -2,6 +2,7 @@ import 'package:expocity/repositories/application_keys.dart';
 import 'package:expocity/screens/base/base_screen.dart';
 import 'package:expocity/stores/category_store.dart';
 import 'package:expocity/stores/city_store.dart';
+import 'package:expocity/stores/connectivity_store.dart';
 import 'package:expocity/stores/home_store.dart';
 import 'package:expocity/stores/page_store.dart';
 import 'package:expocity/stores/user_manager_store.dart';
@@ -20,6 +21,7 @@ void main() async {
 }
 
 void setupLocators() {
+  GetIt.I.registerSingleton<ConnectivityStore>(ConnectivityStore());
   GetIt.I.registerSingleton<PageStore>(PageStore());
   GetIt.I.registerSingleton<HomeStore>(HomeStore());
   GetIt.I.registerSingleton<UserManagerStore>(UserManagerStore());
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: backgroundColor,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: defaultColor,
+          selectionHandleColor: defaultColor,
         ),
         inputDecorationTheme: const InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
