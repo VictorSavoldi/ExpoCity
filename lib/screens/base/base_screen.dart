@@ -1,11 +1,13 @@
 import 'package:expocity/screens/account/account_screen.dart';
 import 'package:expocity/screens/create/create_screen.dart';
+import 'package:expocity/stores/connectivity_store.dart';
 import 'package:expocity/stores/page_store.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import '../home/home_screen.dart';
+import '../offline/offline_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class _BaseScreenState extends State<BaseScreen> {
   final PageController pageController = PageController();
 
   final PageStore pageStore = GetIt.I<PageStore>();
+  final ConnectivityStore connectivityStore = GetIt.I<ConnectivityStore>();
 
   @override
   void initState() {
@@ -25,6 +28,14 @@ class _BaseScreenState extends State<BaseScreen> {
 
     reaction(
         (_) => pageStore.page, (int page) => pageController.jumpToPage(page));
+
+    autorun((_) {
+      if (!connectivityStore.connected) {
+        Future.delayed(const Duration(milliseconds: 50)).then((value) {
+          showDialog(context: context, builder: (_) => const OfflineScreen());
+        });
+      }
+    });
   }
 
   @override
@@ -38,7 +49,6 @@ class _BaseScreenState extends State<BaseScreen> {
             HomeScreen(),
             Container(),
             const CreateScreen(),
-            Container(),
             AccountScreen(),
           ],
         ),

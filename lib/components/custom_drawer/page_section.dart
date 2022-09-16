@@ -57,20 +57,12 @@ class PageSection extends StatelessWidget {
           highlighted: pageStore.page == 2,
         ),
         PageTile(
-          label: 'Favoritos',
-          iconData: Icons.favorite,
+          label: 'Minha Conta',
+          iconData: Icons.person,
           onTap: () {
             verifyLoginAndSetPage(3);
           },
           highlighted: pageStore.page == 3,
-        ),
-        PageTile(
-          label: 'Minha Conta',
-          iconData: Icons.person,
-          onTap: () {
-            verifyLoginAndSetPage(4);
-          },
-          highlighted: pageStore.page == 4,
         ),
         userManagerStore.isLoggedin
             ? PageTile(
