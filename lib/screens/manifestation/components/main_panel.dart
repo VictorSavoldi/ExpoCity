@@ -12,6 +12,15 @@ class MainPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     _StatusManifestation(int indexManifestation) {
       switch (indexManifestation) {
+        case 0:
+          return const Text(
+            'Ativa',
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+              color: defaultColor,
+            ),
+          );
         case 1:
           return const Text(
             'Resolvida',
@@ -30,16 +39,17 @@ class MainPanel extends StatelessWidget {
               color: Colors.red,
             ),
           );
-        case 0:
-        default:
+        case 3:
           return const Text(
-            'Ativa',
+            'Pendente',
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 18,
-              color: defaultColor,
+              color: Color.fromRGBO(255, 175, 0, 1.0),
             ),
           );
+        default:
+          return const Text('');
       }
     }
 

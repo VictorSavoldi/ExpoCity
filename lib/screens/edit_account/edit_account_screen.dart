@@ -97,45 +97,54 @@ class EditAccountScreen extends StatelessWidget {
                       obscureText: true,
                     );
                   }),
-                  Observer(builder: (_) {
-                    return CustomElevatedButton(
-                      edgeInsets: const EdgeInsets.only(top: 20),
-                      onPressed: store.savePressed,
-                      containerActionButton: Container(
-                        alignment: Alignment.center,
-                        child: store.loading
-                            ? const CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation(Colors.white),
-                              )
-                            : const Text(
-                                'Salvar',
-                                style: TextStyle(color: Colors.white),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Observer(builder: (_) {
+                          return IgnorePointer(
+                            ignoring: store.loading,
+                            child: CustomElevatedButton(
+                              exitAccount: true,
+                              edgeInsets: const EdgeInsets.only(top: 20),
+                              onPressed: () async {
+                                store.logout();
+                                GetIt.I<PageStore>().setPage(0);
+                                Navigator.of(context).pop();
+                              },
+                              containerActionButton: Container(
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'Sair',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
+                            ),
+                          );
+                        }),
                       ),
-                    );
-                  }),
-                  Observer(builder: (_) {
-                    return IgnorePointer(
-                      ignoring: store.loading,
-                      child: CustomElevatedButton(
-                        exitAccount: true,
-                        edgeInsets: const EdgeInsets.only(top: 10),
-                        onPressed: () async {
-                          store.logout();
-                          GetIt.I<PageStore>().setPage(0);
-                          Navigator.of(context).pop();
-                        },
-                        containerActionButton: Container(
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Sair',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Observer(builder: (_) {
+                          return CustomElevatedButton(
+                            edgeInsets: const EdgeInsets.only(top: 20),
+                            onPressed: store.savePressed,
+                            containerActionButton: Container(
+                              alignment: Alignment.center,
+                              child: store.loading
+                                  ? const CircularProgressIndicator(
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Colors.white),
+                                    )
+                                  : const Text(
+                                      'Salvar',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                            ),
+                          );
+                        }),
                       ),
-                    );
-                  }),
+                    ],
+                  ),
                 ],
               ),
             ),

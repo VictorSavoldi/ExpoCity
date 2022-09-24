@@ -209,6 +209,33 @@ class ManifestationRepository {
     }
   }
 
+  Future<List<Manifestation>> getAllPendingManifestations() async {
+    final queryBuilder = QueryBuilder<ParseObject>(
+        ParseObject(keyManifestationTable))
+      ..setLimit(250)
+      ..orderByDescending(keyManifestationCreatedAt)
+      ..whereEqualTo(keyManifestationStatus, ManifestationStatus.PENDING.index)
+      ..includeObject([
+        keyManifestationOwner,
+        keyManifestationCity,
+        keyManifestationCategory,
+        keyManifestationNeighborhood,
+      ]);
+
+    final response = await queryBuilder.query();
+
+    if (response.success && response.results == null) {
+      return [];
+    } else if (response.success) {
+      return response.results!
+          .map((po) => Manifestation.fromParse(po))
+          .toList();
+    } else {
+      return Future.error(
+          ParseErrors.getDescription(response.error!.code).toString());
+    }
+  }
+
   Future<void> resolve(Manifestation manifestation) async {
     final parseObject = ParseObject(keyManifestationTable)
       ..set(keyManifestationId, manifestation.id)

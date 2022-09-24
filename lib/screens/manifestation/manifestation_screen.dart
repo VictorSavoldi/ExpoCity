@@ -1,5 +1,6 @@
 import 'package:expocity/components/custom_app_bar/custom_app_bar.dart';
 import 'package:expocity/models/manifestation.dart';
+import 'package:expocity/screens/manifestation/components/admin_panel.dart';
 import 'package:expocity/screens/manifestation/components/carousel_with_indicator.dart';
 import 'package:expocity/screens/manifestation/components/category_panel.dart';
 import 'package:expocity/screens/manifestation/components/description_panel.dart';
@@ -53,8 +54,12 @@ class ManifestationScreen extends StatelessWidget {
                     LocationPanel(manifestation: manifestation),
                     Divider(color: Colors.grey[500]),
                     CategoryPanel(manifestation: manifestation),
-                    Divider(color: Colors.grey[500]),
-                    UserPanel(manifestation: manifestation),
+                    userManagerStore.isUserAdmin
+                        ? UserPanel(manifestation: manifestation)
+                        : Container(),
+                    userManagerStore.isUserAdmin
+                        ? AdminPanel(manifestation: manifestation)
+                        : Container(),
                     const SizedBox(height: 10),
                   ],
                 ),

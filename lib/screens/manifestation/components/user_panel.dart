@@ -12,12 +12,13 @@ class UserPanel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Divider(color: Colors.grey[500]),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 15),
           child: Text(
             'Cadastrada por',
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
           ),

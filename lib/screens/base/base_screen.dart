@@ -1,5 +1,6 @@
 import 'package:expocity/screens/account/account_screen.dart';
 import 'package:expocity/screens/create/create_screen.dart';
+import 'package:expocity/screens/pending/pending_manifestations.dart';
 import 'package:expocity/stores/connectivity_store.dart';
 import 'package:expocity/stores/page_store.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _BaseScreenState extends State<BaseScreen> {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             HomeScreen(),
-            Container(),
+            PendingManifestations(),
             const CreateScreen(),
             AccountScreen(),
           ],
