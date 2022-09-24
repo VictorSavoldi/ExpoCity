@@ -60,6 +60,9 @@ abstract class _CreateStore with Store {
   @observable
   bool savedManifestation = false;
 
+  @observable
+  bool editManifestation = false;
+
   @action
   void setTitle(String value) => title = value;
   void setDescription(String value) => description = value;
@@ -164,7 +167,13 @@ abstract class _CreateStore with Store {
 
     loading = true;
 
+    ManifestationStatus previusStatus = manifestation.status;
+
     try {
+      if (editManifestation) {
+        manifestation.status = ManifestationStatus.PENDING;
+      }
+
       manifestation.title = title;
       manifestation.description = description;
       manifestation.street = street;
@@ -184,8 +193,11 @@ abstract class _CreateStore with Store {
 
       errorText = '';
 
+      editManifestation = false;
+
       loading = false;
     } catch (e) {
+      manifestation.status = previusStatus;
       errorText = e.toString();
     }
   }

@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../components/custom_app_bar/custom_app_bar.dart';
 import '../../components/custom_drawer/custom_drawer.dart';
+import '../../stores/user_manager_store.dart';
 import 'components/create_manifestation_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final HomeStore homeStore = GetIt.I<HomeStore>();
+
+  final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
 
   final ScrollController scrollController = ScrollController();
 
@@ -161,13 +164,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                     );
                   }),
-                  Positioned(
-                    bottom: -50,
-                    left: 0,
-                    right: 0,
-                    child: CreateManifestationButton(
-                        scrollController: scrollController),
-                  )
+                  userManagerStore.isLoggedin
+                      ? Positioned(
+                          bottom: -50,
+                          left: 0,
+                          right: 0,
+                          child: CreateManifestationButton(
+                              scrollController: scrollController),
+                        )
+                      : Container(),
                 ],
               ),
             ),

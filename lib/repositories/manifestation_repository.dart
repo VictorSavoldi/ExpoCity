@@ -185,7 +185,7 @@ class ManifestationRepository {
     final currentUser = ParseUser('', '', '')..set(keyUserId, user.id);
     final queryBuilder =
         QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
-          ..setLimit(100)
+          ..setLimit(150)
           ..orderByDescending(keyManifestationCreatedAt)
           ..whereEqualTo(keyManifestationOwner, currentUser.toPointer())
           ..includeObject([

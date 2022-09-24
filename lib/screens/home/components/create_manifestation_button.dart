@@ -58,7 +58,7 @@ class _CreateManifestationButtonState extends State<CreateManifestationButton>
                 margin: EdgeInsets.only(bottom: buttonAnimation.value),
                 child: CustomElevatedButton(
                     onPressed: () async {
-                      GetIt.I<PageStore>().setPage(1);
+                      GetIt.I<PageStore>().setPage(2);
                     },
                     containerActionButton: Container(
                       alignment: Alignment.center,

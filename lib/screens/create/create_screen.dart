@@ -48,6 +48,8 @@ class _CreateScreenState extends State<CreateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    createStore.editManifestation = editing;
+
     const labelStyle = TextStyle(
         fontWeight: FontWeight.w800, color: Colors.black38, fontSize: 15);
 

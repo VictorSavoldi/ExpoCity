@@ -98,21 +98,6 @@ class AccountScreen extends StatelessWidget {
                         builder: (_) => const MymanifestationsScreen()));
                   },
                 ),
-                ListTile(
-                  title: const Text(
-                    'Favoritos',
-                    style: TextStyle(
-                      color: defaultColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
-                  trailing: const Icon(
-                    Icons.keyboard_arrow_right,
-                    color: defaultColor,
-                  ),
-                  onTap: () {},
-                ),
               ],
             ),
           ),
