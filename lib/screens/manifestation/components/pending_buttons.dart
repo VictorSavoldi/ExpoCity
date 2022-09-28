@@ -1,5 +1,6 @@
 import 'package:expocity/models/manifestation.dart';
 import 'package:expocity/models/user.dart';
+import 'package:expocity/screens/pending/pending_screen.dart';
 import 'package:expocity/stores/pending_store.dart';
 import 'package:flutter/material.dart';
 
@@ -75,7 +76,8 @@ class PendingButtons extends StatelessWidget {
                     Navigator.of(context).pop();
                     store.activeManifestation(manifestation: manifestation);
                     manifestation.status = ManifestationStatus.ACTIVE;
-                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => PendingScreen()));
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) =>
                             ManifestationScreen(manifestation: manifestation)));
@@ -112,7 +114,8 @@ class PendingButtons extends StatelessWidget {
                     Navigator.of(context).pop();
                     store.deleteManifestation(manifestation: manifestation);
                     manifestation.status = ManifestationStatus.DELETED;
-                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => PendingScreen()));
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) =>
                             ManifestationScreen(manifestation: manifestation)));
