@@ -26,6 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ScrollController scrollController = ScrollController();
 
+  @override
+  void initState() {
+    super.initState();
+
+    homeStore.resetPage();
+  }
+
   openSerch(BuildContext context) async {
     final search = await showDialog(
       context: context,

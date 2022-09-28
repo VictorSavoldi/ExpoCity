@@ -7,10 +7,22 @@ import '../../components/colors.dart';
 import '../../components/custom_drawer/custom_drawer.dart';
 import 'components/pending_manifestations_tile.dart';
 
-class PendingManifestations extends StatelessWidget {
-  PendingManifestations({Key? key}) : super(key: key);
+class PendingScreen extends StatefulWidget {
+  PendingScreen({Key? key}) : super(key: key);
 
+  @override
+  State<PendingScreen> createState() => _PendingScreenState();
+}
+
+class _PendingScreenState extends State<PendingScreen> {
   final PendingStore store = PendingStore();
+
+  @override
+  void initState() {
+    super.initState();
+
+    store.refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
