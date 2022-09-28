@@ -76,8 +76,10 @@ class PendingButtons extends StatelessWidget {
                     Navigator.of(context).pop();
                     store.activeManifestation(manifestation: manifestation);
                     manifestation.status = ManifestationStatus.ACTIVE;
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => PendingScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PendingScreen()));
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) =>
                             ManifestationScreen(manifestation: manifestation)));
@@ -114,8 +116,10 @@ class PendingButtons extends StatelessWidget {
                     Navigator.of(context).pop();
                     store.deleteManifestation(manifestation: manifestation);
                     manifestation.status = ManifestationStatus.DELETED;
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => PendingScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PendingScreen()));
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) =>
                             ManifestationScreen(manifestation: manifestation)));

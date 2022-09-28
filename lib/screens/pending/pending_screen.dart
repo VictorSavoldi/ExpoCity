@@ -27,18 +27,7 @@ class _PendingScreenState extends State<PendingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: const Text('Manifestações Pendentes'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              store.refresh();
-            },
-            icon: const Icon(Icons.refresh),
-            color: Colors.white,
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(title: const Text('Manifestações Pendentes')),
       drawer: const CustomDrawer(),
       body: Column(
         children: [
