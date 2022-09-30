@@ -19,8 +19,7 @@ abstract class _HomeStore with Store {
       try {
         setLoading(true);
         final newManifestations = await ManifestationRepository()
-            .getHomeManifestationList(
-                filter: filter, search: search, category: category, page: page);
+            .getHomeManifestationList(filter: filter, search: search, category: category, page: page);
         addNewManifestation(newManifestations);
         setError('');
         setLoading(false);
@@ -30,8 +29,7 @@ abstract class _HomeStore with Store {
     });
   }
 
-  ObservableList<Manifestation> manifestationList =
-      ObservableList<Manifestation>();
+  ObservableList<Manifestation> manifestationList = ObservableList<Manifestation>();
 
   @observable
   String errorText = '';
@@ -92,10 +90,9 @@ abstract class _HomeStore with Store {
   void setLoading(bool value) => loading = value;
 
   @computed
-  int get itemCount =>
-      lastPage ? manifestationList.length : manifestationList.length + 1;
+  int get itemCount => lastPage ? manifestationList.length : manifestationList.length + 1;
 
-  void resetPage() {
+  void resetPage() async {
     page = 0;
     manifestationList.clear();
     lastPage = false;

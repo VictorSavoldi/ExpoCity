@@ -8,6 +8,7 @@ import 'package:expocity/screens/create/components/city_field.dart';
 import 'package:expocity/screens/create/components/hide_name_field.dart';
 import 'package:expocity/screens/create/components/images_field.dart';
 import 'package:expocity/screens/create/components/neighborhood_field.dart';
+import 'package:expocity/screens/mymanifestations/mymanifestations_screen.dart';
 import 'package:expocity/stores/create_store.dart';
 import 'package:expocity/stores/page_store.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,23 @@ class _CreateScreenState extends State<CreateScreen> {
     super.initState();
 
     when((_) => createStore.savedManifestation, () {
-      editing
-          ? Navigator.of(context).pop(true)
-          : GetIt.I<PageStore>().setPage(0);
+      if (editing) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        GetIt.I<PageStore>().setPage(3);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => MymanifestationsScreen(indexController: 0),
+          ),
+        );
+      } else {
+        GetIt.I<PageStore>().setPage(0);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => MymanifestationsScreen(indexController: 0),
+          ),
+        );
+      }
     });
   }
 
@@ -50,47 +65,48 @@ class _CreateScreenState extends State<CreateScreen> {
   Widget build(BuildContext context) {
     createStore.editManifestation = editing;
 
-    const labelStyle = TextStyle(
-        fontWeight: FontWeight.w800, color: Colors.black38, fontSize: 15);
-
+    const labelStyle = TextStyle(fontWeight: FontWeight.w800, color: Colors.black38, fontSize: 15);
     const contentPadding = EdgeInsets.symmetric(vertical: 18, horizontal: 12);
 
     return Scaffold(
       drawer: editing ? null : const CustomDrawer(),
-      appBar: CustomAppBar(
-          title: editing
-              ? const Text('Editar Manifestação')
-              : const Text('Cadastrar Manifestação')),
+      appBar: CustomAppBar(title: editing ? const Text('Editar Manifestação') : const Text('Cadastrar Manifestação')),
       body: Container(
         alignment: Alignment.center,
         child: SingleChildScrollView(
           child: Card(
             margin: const EdgeInsets.all(20),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 8,
             clipBehavior: Clip.antiAlias,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, top: 20, right: 20, bottom: 5),
+              padding: const EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 5),
               child: Observer(
                 builder: (_) {
                   if (createStore.loading) {
                     return Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, top: 0, right: 20, bottom: 15),
+                      padding: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 15),
                       child: Column(
-                        children: const [
-                          Text(
-                            'Salvando Manifestação',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: defaultColor,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          CircularProgressIndicator(
+                        children: [
+                          !editing
+                              ? const Text(
+                                  'Cadastrando Manifestação',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: defaultColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )
+                              : const Text(
+                                  'Alterando Manifestação',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: defaultColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                          const SizedBox(height: 20),
+                          const CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation(defaultColor),
                           ),
                         ],
@@ -169,20 +185,57 @@ class _CreateScreenState extends State<CreateScreen> {
                         ErrorBox(message: createStore.errorText),
                         Observer(builder: (_) {
                           return CustomElevatedButton(
-                            edgeInsets:
-                                const EdgeInsets.only(top: 15, bottom: 15),
-                            onPressed: createStore.sendPressed,
+                            edgeInsets: const EdgeInsets.only(top: 15, bottom: 15),
+                            onPressed: !editing
+                                ? createStore.sendPressed
+                                : () => showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                          elevation: 8,
+                                          title: const Text('Editar Manifestação'),
+                                          content: const Padding(
+                                            padding: EdgeInsets.only(top: 10),
+                                            child: Text(
+                                              'Deseja editar a Manifestação? Ao confirmar, o status será retornado para "Pendente".',
+                                              style: TextStyle(fontSize: 17),
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: Navigator.of(context).pop,
+                                              child: const Text(
+                                                'Não',
+                                                style: TextStyle(color: defaultColor, fontSize: 17),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: createStore.sendPressed,
+                                              child: const Text(
+                                                'Sim',
+                                                style: TextStyle(color: errorColor, fontSize: 17),
+                                              ),
+                                            ),
+                                          ],
+                                        )),
                             containerActionButton: Container(
                               alignment: Alignment.center,
-                              child: createStore.loading
-                                  ? const CircularProgressIndicator(
-                                      valueColor:
-                                          AlwaysStoppedAnimation(Colors.white),
-                                    )
-                                  : const Text(
-                                      'ENVIAR',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
+                              child: !editing
+                                  ? createStore.loading
+                                      ? const CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                                        )
+                                      : const Text(
+                                          'CADASTRAR',
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                  : createStore.loading
+                                      ? const CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                                        )
+                                      : const Text(
+                                          'EDITAR',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                             ),
                           );
                         }),

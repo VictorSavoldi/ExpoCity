@@ -19,8 +19,7 @@ class AccountScreen extends StatelessWidget {
       body: Center(
         child: Card(
           margin: const EdgeInsets.symmetric(horizontal: 25),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           clipBehavior: Clip.antiAlias,
           elevation: 8,
           child: Padding(
@@ -41,17 +40,13 @@ class AccountScreen extends StatelessWidget {
                             Observer(builder: (_) {
                               return Text(
                                 GetIt.I<UserManagerStore>().user!.name,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: defaultColor,
-                                    fontWeight: FontWeight.w900),
+                                style: const TextStyle(fontSize: 20, color: defaultColor, fontWeight: FontWeight.w900),
                               );
                             }),
                             const SizedBox(height: 2),
                             Text(
                               GetIt.I<UserManagerStore>().user!.email,
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black54),
+                              style: const TextStyle(fontSize: 16, color: Colors.black54),
                             ),
                           ],
                         ),
@@ -63,15 +58,12 @@ class AccountScreen extends StatelessWidget {
                           child: TextButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => EditAccountScreen(
-                                      nameAccount: GetIt.I<UserManagerStore>()
-                                          .user!
-                                          .name)));
+                                  builder: (_) =>
+                                      EditAccountScreen(nameAccount: GetIt.I<UserManagerStore>().user!.name)));
                             },
                             child: const Text(
                               'Editar',
-                              style:
-                                  TextStyle(color: defaultColor, fontSize: 17),
+                              style: TextStyle(color: defaultColor, fontSize: 17),
                             ),
                           ),
                         ),
@@ -94,8 +86,7 @@ class AccountScreen extends StatelessWidget {
                     color: defaultColor,
                   ),
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const MymanifestationsScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => MymanifestationsScreen()));
                   },
                 ),
               ],

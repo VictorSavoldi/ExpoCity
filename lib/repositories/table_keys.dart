@@ -31,3 +31,4 @@ const keyManifestationStreet = 'street';
 const keyManifestationImages = 'images';
 const keyManifestationCreatedAt = 'createdAt';
 const keyManifestationOwner = 'owner';
+const keyManifestationUpdatedAt = 'updatedAt';

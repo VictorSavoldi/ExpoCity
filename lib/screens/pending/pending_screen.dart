@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../components/colors.dart';
 import '../../components/custom_drawer/custom_drawer.dart';
+import '../manifestation/manifestation_screen.dart';
 import 'components/pending_manifestations_tile.dart';
 
 class PendingScreen extends StatefulWidget {
@@ -55,10 +56,7 @@ class _PendingScreenState extends State<PendingScreen> {
                       Text(
                         'Você não possui manifestações pendentes!',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: defaultColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: defaultColor, fontSize: 20, fontWeight: FontWeight.w700),
                       )
                     ],
                   ),
@@ -67,8 +65,18 @@ class _PendingScreenState extends State<PendingScreen> {
               return ListView.builder(
                   itemCount: store.allManifestations.length,
                   itemBuilder: (_, index) {
-                    return PendingManifestationsTile(
-                        manifestation: store.allManifestations[index]);
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (_) => ManifestationScreen(manifestation: store.allManifestations[index])))
+                            .then((_) {
+                          store.refresh();
+                          setState(() {});
+                        });
+                      },
+                      child: PendingManifestationsTile(manifestation: store.allManifestations[index]),
+                    );
                   });
             }),
           ),

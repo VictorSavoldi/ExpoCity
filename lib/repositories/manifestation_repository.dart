@@ -16,42 +16,33 @@ class ManifestationRepository {
     Category? category,
     required int page,
   }) async {
-    final queryBuilder =
-        QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
-          ..includeObject([
-            keyManifestationOwner,
-            keyManifestationCity,
-            keyManifestationCategory,
-            keyManifestationNeighborhood,
-          ])
-          ..setAmountToSkip(page * 20)
-          ..setLimit(20);
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
+      ..includeObject([
+        keyManifestationOwner,
+        keyManifestationCity,
+        keyManifestationCategory,
+        keyManifestationNeighborhood,
+      ])
+      ..setAmountToSkip(page * 20)
+      ..setLimit(20);
 
     if (filter!.city != null) {
       queryBuilder.whereEqualTo(
-          keyManifestationCity,
-          (ParseObject(keyCityTable)..set(keyCityId, filter.city!.id))
-              .toPointer());
+          keyManifestationCity, (ParseObject(keyCityTable)..set(keyCityId, filter.city!.id)).toPointer());
     }
 
     if (search != null && search.trim().isNotEmpty) {
-      queryBuilder.whereContains(keyManifestationTitle, search,
-          caseSensitive: false);
+      queryBuilder.whereContains(keyManifestationTitle, search, caseSensitive: false);
     }
 
     if (category != null && category.id != '*') {
       queryBuilder.whereEqualTo(
-          keyManifestationCategory,
-          (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id))
-              .toPointer());
+          keyManifestationCategory, (ParseObject(keyCategoryTable)..set(keyCategoryId, category.id)).toPointer());
     }
 
     if (filter.neighborhood != null && filter.neighborhood!.id != '*') {
-      queryBuilder.whereEqualTo(
-          keyManifestationNeighborhood,
-          (ParseObject(keyNeighborhoodTable)
-                ..set(keyNeighborhoodId, filter.neighborhood!.id))
-              .toPointer());
+      queryBuilder.whereEqualTo(keyManifestationNeighborhood,
+          (ParseObject(keyNeighborhoodTable)..set(keyNeighborhoodId, filter.neighborhood!.id)).toPointer());
     }
 
     switch (filter.orderBy) {
@@ -65,31 +56,24 @@ class ManifestationRepository {
     }
 
     if (filter.manifestationStatus == MANIFESTATION_STATUS_ACTIVE) {
-      queryBuilder.whereEqualTo(
-          keyManifestationStatus, ManifestationStatus.ACTIVE.index);
+      queryBuilder.whereEqualTo(keyManifestationStatus, ManifestationStatus.ACTIVE.index);
     }
 
     if (filter.manifestationStatus == MANIFESTATION_STATUS_RESOLVED) {
-      queryBuilder.whereEqualTo(
-          keyManifestationStatus, ManifestationStatus.RESOLVED.index);
+      queryBuilder.whereEqualTo(keyManifestationStatus, ManifestationStatus.RESOLVED.index);
     }
 
-    if (filter.manifestationStatus ==
-        (MANIFESTATION_STATUS_ACTIVE | MANIFESTATION_STATUS_RESOLVED)) {
-      queryBuilder.whereNotEqualTo(
-          keyManifestationStatus, ManifestationStatus.DELETED.index);
+    if (filter.manifestationStatus == (MANIFESTATION_STATUS_ACTIVE | MANIFESTATION_STATUS_RESOLVED)) {
+      queryBuilder.whereNotEqualTo(keyManifestationStatus, ManifestationStatus.DELETED.index);
     }
 
     final response = await queryBuilder.query();
     if (response.success && response.results == null) {
       return [];
     } else if (response.success) {
-      return response.results!
-          .map((po) => Manifestation.fromParse(po))
-          .toList();
+      return response.results!.map((po) => Manifestation.fromParse(po)).toList();
     } else {
-      return Future.error(
-          ParseErrors.getDescription(response.error!.code).toString());
+      return Future.error(ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 
@@ -110,44 +94,33 @@ class ManifestationRepository {
         manifestationObject.set<String>(keyManifestationId, manifestation.id!);
       }
 
-      manifestationObject.set<String>(
-          keyManifestationTitle, manifestation.title);
+      manifestationObject.set<String>(keyManifestationTitle, manifestation.title);
 
-      manifestationObject.set<String>(
-          keyManifestationDescription, manifestation.description);
+      manifestationObject.set<String>(keyManifestationDescription, manifestation.description);
 
-      manifestationObject.set<String>(
-          keyManifestationStreet, manifestation.street);
+      manifestationObject.set<String>(keyManifestationStreet, manifestation.street);
 
-      manifestationObject.set<bool>(
-          keyManifestationHideName, manifestation.hidName);
+      manifestationObject.set<bool>(keyManifestationHideName, manifestation.hidName);
 
-      manifestationObject.set<int>(
-          keyManifestationStatus, manifestation.status.index);
+      manifestationObject.set<int>(keyManifestationStatus, manifestation.status.index);
 
-      manifestationObject.set<List<ParseFile>>(
-          keyManifestationImages, parseImages);
+      manifestationObject.set<List<ParseFile>>(keyManifestationImages, parseImages);
 
       manifestationObject.set<ParseUser>(keyManifestationOwner, parseUser);
 
       manifestationObject.set<ParseObject>(
-          keyManifestationCategory,
-          ParseObject(keyCategoryTable)
-            ..set(keyCategoryId, manifestation.category!.id));
-
-      manifestationObject.set<ParseObject>(keyManifestationCity,
-          ParseObject(keyCityTable)..set(keyCityId, manifestation.city!.id));
+          keyManifestationCategory, ParseObject(keyCategoryTable)..set(keyCategoryId, manifestation.category!.id));
 
       manifestationObject.set<ParseObject>(
-          keyManifestationNeighborhood,
-          ParseObject(keyNeighborhoodTable)
-            ..set(keyNeighborhoodId, manifestation.neighborhood!.id));
+          keyManifestationCity, ParseObject(keyCityTable)..set(keyCityId, manifestation.city!.id));
+
+      manifestationObject.set<ParseObject>(keyManifestationNeighborhood,
+          ParseObject(keyNeighborhoodTable)..set(keyNeighborhoodId, manifestation.neighborhood!.id));
 
       final response = await manifestationObject.save();
 
       if (!response.success) {
-        Future.error(
-            ParseErrors.getDescription(response.error!.code).toString());
+        Future.error(ParseErrors.getDescription(response.error!.code).toString());
       }
     } catch (e) {
       return Future.error('Falha ao salvar anúncio');
@@ -168,8 +141,7 @@ class ManifestationRepository {
           final parseFile = ParseFile(image, name: path.basename(image.path));
           final response = await parseFile.save();
           if (!response.success) {
-            return Future.error(
-                ParseErrors.getDescription(response.error!.code).toString());
+            return Future.error(ParseErrors.getDescription(response.error!.code).toString());
           }
           parseImages.add(parseFile);
         }
@@ -183,35 +155,30 @@ class ManifestationRepository {
 
   Future<List<Manifestation>> getMyManifestations(User user) async {
     final currentUser = ParseUser('', '', '')..set(keyUserId, user.id);
-    final queryBuilder =
-        QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
-          ..setLimit(150)
-          ..orderByDescending(keyManifestationCreatedAt)
-          ..whereEqualTo(keyManifestationOwner, currentUser.toPointer())
-          ..includeObject([
-            keyManifestationOwner,
-            keyManifestationCity,
-            keyManifestationCategory,
-            keyManifestationNeighborhood,
-          ]);
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
+      ..setLimit(150)
+      ..orderByDescending(keyManifestationUpdatedAt)
+      ..whereEqualTo(keyManifestationOwner, currentUser.toPointer())
+      ..includeObject([
+        keyManifestationOwner,
+        keyManifestationCity,
+        keyManifestationCategory,
+        keyManifestationNeighborhood,
+      ]);
 
     final response = await queryBuilder.query();
 
     if (response.success && response.results == null) {
       return [];
     } else if (response.success) {
-      return response.results!
-          .map((po) => Manifestation.fromParse(po))
-          .toList();
+      return response.results!.map((po) => Manifestation.fromParse(po)).toList();
     } else {
-      return Future.error(
-          ParseErrors.getDescription(response.error!.code).toString());
+      return Future.error(ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 
   Future<List<Manifestation>> getAllPendingManifestations() async {
-    final queryBuilder = QueryBuilder<ParseObject>(
-        ParseObject(keyManifestationTable))
+    final queryBuilder = QueryBuilder<ParseObject>(ParseObject(keyManifestationTable))
       ..setLimit(250)
       ..orderByDescending(keyManifestationCreatedAt)
       ..whereEqualTo(keyManifestationStatus, ManifestationStatus.PENDING.index)
@@ -227,12 +194,9 @@ class ManifestationRepository {
     if (response.success && response.results == null) {
       return [];
     } else if (response.success) {
-      return response.results!
-          .map((po) => Manifestation.fromParse(po))
-          .toList();
+      return response.results!.map((po) => Manifestation.fromParse(po)).toList();
     } else {
-      return Future.error(
-          ParseErrors.getDescription(response.error!.code).toString());
+      return Future.error(ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 
@@ -244,8 +208,7 @@ class ManifestationRepository {
     final response = await parseObject.save();
 
     if (!response.success) {
-      return Future.error(
-          ParseErrors.getDescription(response.error!.code).toString());
+      return Future.error(ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 
@@ -257,8 +220,7 @@ class ManifestationRepository {
     final response = await parseObject.save();
 
     if (!response.success) {
-      return Future.error(
-          ParseErrors.getDescription(response.error!.code).toString());
+      return Future.error(ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 
@@ -270,8 +232,7 @@ class ManifestationRepository {
     final response = await parseObject.save();
 
     if (!response.success) {
-      return Future.error(
-          ParseErrors.getDescription(response.error!.code).toString());
+      return Future.error(ParseErrors.getDescription(response.error!.code).toString());
     }
   }
 }

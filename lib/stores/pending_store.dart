@@ -8,10 +8,6 @@ part 'pending_store.g.dart';
 class PendingStore = _PendingStore with _$PendingStore;
 
 abstract class _PendingStore with Store {
-  _PendingStore() {
-    _getAllPendingManifestations();
-  }
-
   @observable
   bool loading = false;
 
@@ -22,8 +18,7 @@ abstract class _PendingStore with Store {
     try {
       loading = true;
 
-      allManifestations =
-          await ManifestationRepository().getAllPendingManifestations();
+      allManifestations = await ManifestationRepository().getAllPendingManifestations();
 
       loading = false;
     } catch (e) {}
@@ -32,26 +27,29 @@ abstract class _PendingStore with Store {
   void refresh() => _getAllPendingManifestations();
 
   @action
-  Future<void> resolveManifestation(
-      {required Manifestation manifestation}) async {
+  Future<void> resolveManifestation({required Manifestation manifestation}) async {
     loading = true;
+
     await ManifestationRepository().resolve(manifestation);
-    refresh();
+
+    loading = false;
   }
 
   @action
-  Future<void> activeManifestation(
-      {required Manifestation manifestation}) async {
+  Future<void> activeManifestation({required Manifestation manifestation}) async {
     loading = true;
+
     await ManifestationRepository().active(manifestation);
-    refresh();
+
+    loading = false;
   }
 
   @action
-  Future<void> deleteManifestation(
-      {required Manifestation manifestation}) async {
+  Future<void> deleteManifestation({required Manifestation manifestation}) async {
     loading = true;
+
     await ManifestationRepository().delete(manifestation);
-    refresh();
+
+    loading = false;
   }
 }
