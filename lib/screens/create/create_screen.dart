@@ -44,6 +44,7 @@ class _CreateScreenState extends State<CreateScreen> {
       if (editing) {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
+        Navigator.of(context).pop();
         GetIt.I<PageStore>().setPage(3);
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -189,34 +190,64 @@ class _CreateScreenState extends State<CreateScreen> {
                             onPressed: !editing
                                 ? createStore.sendPressed
                                 : () => showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
+                                      context: context,
+                                      builder: (_) => Observer(builder: (_) {
+                                        return AlertDialog(
                                           elevation: 8,
-                                          title: const Text('Editar Manifestação'),
-                                          content: const Padding(
-                                            padding: EdgeInsets.only(top: 10),
-                                            child: Text(
-                                              'Deseja editar a Manifestação? Ao confirmar, o status será retornado para "Pendente".',
-                                              style: TextStyle(fontSize: 17),
-                                            ),
-                                          ),
+                                          title: !createStore.loading
+                                              ? const Text('Editar Manifestação')
+                                              : const Text(
+                                                  'Alterando Status',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                          content: !createStore.loading
+                                              ? const Padding(
+                                                  padding: EdgeInsets.only(top: 10),
+                                                  child: Text(
+                                                    'Deseja editar a Manifestação? Ao confirmar, o status será retornado para "Pendente".',
+                                                    style: TextStyle(fontSize: 17),
+                                                  ),
+                                                )
+                                              : Padding(
+                                                  padding: const EdgeInsets.only(top: 10),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: const [
+                                                          CircularProgressIndicator(
+                                                            valueColor: AlwaysStoppedAnimation(defaultColor),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
                                           actions: [
-                                            TextButton(
-                                              onPressed: Navigator.of(context).pop,
-                                              child: const Text(
-                                                'Não',
-                                                style: TextStyle(color: defaultColor, fontSize: 17),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: createStore.sendPressed,
-                                              child: const Text(
-                                                'Sim',
-                                                style: TextStyle(color: errorColor, fontSize: 17),
-                                              ),
-                                            ),
+                                            !createStore.loading
+                                                ? TextButton(
+                                                    onPressed: !createStore.loading ? Navigator.of(context).pop : null,
+                                                    child: const Text(
+                                                      'Não',
+                                                      style: TextStyle(color: defaultColor, fontSize: 17),
+                                                    ),
+                                                  )
+                                                : Container(),
+                                            !createStore.loading
+                                                ? TextButton(
+                                                    onPressed: !createStore.loading ? createStore.sendPressed : null,
+                                                    child: const Text(
+                                                      'Sim',
+                                                      style: TextStyle(color: errorColor, fontSize: 17),
+                                                    ),
+                                                  )
+                                                : Container(),
                                           ],
-                                        )),
+                                        );
+                                      }),
+                                    ),
                             containerActionButton: Container(
                               alignment: Alignment.center,
                               child: !editing
