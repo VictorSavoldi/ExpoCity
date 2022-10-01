@@ -3,12 +3,15 @@ import 'package:expocity/screens/city/neighborhood_screen.dart';
 import 'package:expocity/stores/create_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../../stores/user_manager_store.dart';
 
 class NeighborhoodField extends StatelessWidget {
-  const NeighborhoodField({Key? key, required this.createStore})
-      : super(key: key);
+  NeighborhoodField({Key? key, required this.createStore}) : super(key: key);
 
   final CreateStore createStore;
+  final UserManagerStore user = GetIt.I<UserManagerStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,9 @@ class NeighborhoodField extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(
               border: createStore.neighborhoodError == null
-                  ? Border.all(color: defaultColor)
+                  ? user.isUserFree
+                      ? Border.all(color: defaultColor)
+                      : Border.all(color: Colors.black12)
                   : Border.all(color: flutterErrorColor),
               borderRadius: const BorderRadius.all(Radius.circular(5)),
             ),
@@ -51,7 +56,7 @@ class NeighborhoodField extends StatelessWidget {
                     ),
               trailing: const Icon(Icons.keyboard_arrow_down),
               enabled: createStore.city != null,
-              onTap: !createStore.loading
+              onTap: (!createStore.loading && user.isUserFree)
                   ? () async {
                       final neighborhood = await showDialog(
                         context: context,
@@ -80,8 +85,7 @@ class NeighborhoodField extends StatelessWidget {
                       const SizedBox(width: 12),
                       Text(
                         createStore.neighborhoodError!,
-                        style: const TextStyle(
-                            color: flutterErrorColor, fontSize: 12),
+                        style: const TextStyle(color: flutterErrorColor, fontSize: 12),
                       ),
                     ],
                   ),

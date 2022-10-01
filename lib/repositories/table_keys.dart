@@ -1,7 +1,9 @@
+const keyUserTable = 'User';
 const keyUserId = 'objectId';
 const keyUserName = 'name';
 const keyUserEmail = 'email';
 const keyUserType = 'userType';
+const keyUserBlock = 'userBlock';
 const keyUserCreatedAt = 'createdAt';
 
 const keyCategoryTable = 'Categories';

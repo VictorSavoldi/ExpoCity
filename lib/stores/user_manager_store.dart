@@ -24,8 +24,10 @@ abstract class _UserManagerStore with Store {
   bool get isLoggedin => user != null;
 
   @computed
-  bool get isUserAdmin =>
-      ((user != null) && (user!.userType == UserType.ADMINISTRADOR));
+  bool get isUserAdmin => ((user != null) && (user!.userType == UserType.ADMINISTRADOR));
+
+  @computed
+  bool get isUserFree => ((user != null) && (user!.userBlock == UserBlock.FREE));
 
   // ignore: body_might_complete_normally_nullable
   Future<User?> _getCurrentUser() async {

@@ -23,6 +23,13 @@ mixin _$UserManagerStore on _UserManagerStore, Store {
       (_$isUserAdminComputed ??= Computed<bool>(() => super.isUserAdmin,
               name: '_UserManagerStore.isUserAdmin'))
           .value;
+  Computed<bool>? _$isUserFreeComputed;
+
+  @override
+  bool get isUserFree =>
+      (_$isUserFreeComputed ??= Computed<bool>(() => super.isUserFree,
+              name: '_UserManagerStore.isUserFree'))
+          .value;
 
   late final _$userAtom =
       Atom(name: '_UserManagerStore.user', context: context);
@@ -70,7 +77,8 @@ mixin _$UserManagerStore on _UserManagerStore, Store {
     return '''
 user: ${user},
 isLoggedin: ${isLoggedin},
-isUserAdmin: ${isUserAdmin}
+isUserAdmin: ${isUserAdmin},
+isUserFree: ${isUserFree}
     ''';
   }
 }

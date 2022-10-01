@@ -7,11 +7,15 @@ import 'package:expocity/screens/create/components/image_source_modal.dart';
 import 'package:expocity/stores/create_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../../stores/user_manager_store.dart';
 
 class ImagesField extends StatelessWidget {
-  const ImagesField({Key? key, required this.createStore}) : super(key: key);
+  ImagesField({Key? key, required this.createStore}) : super(key: key);
 
   final CreateStore createStore;
+  final UserManagerStore user = GetIt.I<UserManagerStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +43,17 @@ class ImagesField extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: createStore.images.length < 5
-                  ? createStore.images.length + 1
-                  : 5,
+              itemCount: createStore.images.length < 5 ? createStore.images.length + 1 : 5,
               itemBuilder: (_, index) {
                 if (index == createStore.images.length) {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                     child: GestureDetector(
-                      onTap: !createStore.loading
+                      onTap: (!createStore.loading && user.isUserFree)
                           ? () {
                               showModalBottomSheet(
                                 context: context,
-                                builder: (_) =>
-                                    ImageSourceModal(_onImageSelected),
+                                builder: (_) => ImageSourceModal(_onImageSelected),
                               );
                             }
                           : null,
@@ -88,10 +89,8 @@ class ImagesField extends StatelessWidget {
                           builder: (_) => ImageDialog(
                             image: createStore.images[index] is File
                                 ? FileImage(createStore.images[index])
-                                : CachedNetworkImageProvider(
-                                    createStore.images[index]) as ImageProvider,
-                            onDelete: () async =>
-                                await createStore.images.removeAt(index),
+                                : CachedNetworkImageProvider(createStore.images[index]) as ImageProvider,
+                            onDelete: () async => await createStore.images.removeAt(index),
                           ),
                         );
                       },
@@ -102,8 +101,7 @@ class ImagesField extends StatelessWidget {
                           radius: 43,
                           backgroundImage: createStore.images[index] is File
                               ? FileImage(createStore.images[index])
-                              : CachedNetworkImageProvider(
-                                  createStore.images[index]) as ImageProvider,
+                              : CachedNetworkImageProvider(createStore.images[index]) as ImageProvider,
                         ),
                       ),
                     ),
@@ -126,8 +124,7 @@ class ImagesField extends StatelessWidget {
                     const SizedBox(width: 12),
                     Text(
                       createStore.imagesError!,
-                      style: const TextStyle(
-                          color: flutterErrorColor, fontSize: 12),
+                      style: const TextStyle(color: flutterErrorColor, fontSize: 12),
                     ),
                   ],
                 ),

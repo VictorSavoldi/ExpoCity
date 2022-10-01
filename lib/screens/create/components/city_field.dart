@@ -3,11 +3,15 @@ import 'package:expocity/screens/city/city_screen.dart';
 import 'package:expocity/stores/create_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+
+import '../../../stores/user_manager_store.dart';
 
 class CityField extends StatelessWidget {
-  const CityField({Key? key, required this.createStore}) : super(key: key);
+  CityField({Key? key, required this.createStore}) : super(key: key);
 
   final CreateStore createStore;
+  final UserManagerStore user = GetIt.I<UserManagerStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,9 @@ class CityField extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(
               border: createStore.cityError == null
-                  ? Border.all(color: defaultColor)
+                  ? user.isUserFree
+                      ? Border.all(color: defaultColor)
+                      : Border.all(color: Colors.black12)
                   : Border.all(color: flutterErrorColor),
               borderRadius: const BorderRadius.all(Radius.circular(5)),
             ),
@@ -40,7 +46,7 @@ class CityField extends StatelessWidget {
                       ),
                     ),
               trailing: const Icon(Icons.keyboard_arrow_down),
-              onTap: !createStore.loading
+              onTap: (!createStore.loading && user.isUserFree)
                   ? () async {
                       final city = await showDialog(
                         context: context,
@@ -69,8 +75,7 @@ class CityField extends StatelessWidget {
                       const SizedBox(width: 12),
                       Text(
                         createStore.cityError!,
-                        style: const TextStyle(
-                            color: flutterErrorColor, fontSize: 12),
+                        style: const TextStyle(color: flutterErrorColor, fontSize: 12),
                       ),
                     ],
                   ),

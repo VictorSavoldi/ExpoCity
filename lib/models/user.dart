@@ -1,11 +1,14 @@
 enum UserType { COMUM, ADMINISTRADOR }
 
+enum UserBlock { FREE, BLOCKED }
+
 class User {
   User.createUser({
     required this.name,
     required this.email,
     required this.password,
     this.userType = UserType.COMUM,
+    this.userBlock = UserBlock.FREE,
   });
 
   User.getDataBase(
@@ -13,6 +16,7 @@ class User {
       required this.name,
       required this.email,
       required this.userType,
+      required this.userBlock,
       required this.createdAt});
 
   User.getDataBaseManifestation(
@@ -20,6 +24,7 @@ class User {
       required this.name,
       this.email = '',
       required this.userType,
+      required this.userBlock,
       required this.createdAt});
 
   String? id;
@@ -27,6 +32,7 @@ class User {
   String email;
   String? password;
   UserType userType;
+  UserBlock userBlock;
   DateTime? createdAt;
 
   @override

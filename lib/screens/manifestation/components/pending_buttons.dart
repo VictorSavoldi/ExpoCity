@@ -1,5 +1,6 @@
 import 'package:expocity/models/manifestation.dart';
 import 'package:expocity/models/user.dart';
+import 'package:expocity/repositories/user_repository.dart';
 import 'package:expocity/stores/pending_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -175,6 +176,7 @@ class PendingButtons extends StatelessWidget {
                     onPressed: !store.loading
                         ? () async {
                             await store.deleteManifestation(manifestation: manifestation);
+                            await UserRepository().blockUser(user: manifestation.user);
                             Navigator.of(context).pop();
                             manifestation.status = ManifestationStatus.DELETED;
                             Navigator.of(context).pop();

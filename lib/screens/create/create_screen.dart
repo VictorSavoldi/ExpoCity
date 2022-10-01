@@ -18,6 +18,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../components/custom_app_bar/custom_app_bar.dart';
+import '../../stores/user_manager_store.dart';
 
 class CreateScreen extends StatefulWidget {
   const CreateScreen({Key? key, this.manifestation}) : super(key: key);
@@ -35,6 +36,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
   bool editing;
   final CreateStore createStore;
+  final UserManagerStore user = GetIt.I<UserManagerStore>();
 
   @override
   void initState() {
@@ -117,12 +119,16 @@ class _CreateScreenState extends State<CreateScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        !user.isUserFree
+                            ? const ErrorBox(
+                                message: 'Usuário bloqueado. Não é possível cadastrar uma nova Manifestação.')
+                            : Container(),
                         ImagesField(createStore: createStore),
                         const SizedBox(height: 20),
                         Observer(builder: (_) {
                           return TextFormField(
                             initialValue: createStore.title,
-                            enabled: !createStore.loading,
+                            enabled: !createStore.loading && user.isUserFree,
                             onChanged: createStore.setTitle,
                             decoration: InputDecoration(
                               labelText: 'Título',
@@ -142,7 +148,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         Observer(builder: (_) {
                           return TextFormField(
                             initialValue: createStore.description,
-                            enabled: !createStore.loading,
+                            enabled: !createStore.loading && user.isUserFree,
                             onChanged: createStore.setDescription,
                             decoration: InputDecoration(
                               labelText: 'Descrição',
@@ -168,7 +174,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         Observer(builder: (_) {
                           return TextFormField(
                             initialValue: createStore.street,
-                            enabled: !createStore.loading,
+                            enabled: !createStore.loading && user.isUserFree,
                             onChanged: createStore.setStreet,
                             decoration: InputDecoration(
                               labelText: 'Rua',
@@ -186,68 +192,73 @@ class _CreateScreenState extends State<CreateScreen> {
                         ErrorBox(message: createStore.errorText),
                         Observer(builder: (_) {
                           return CustomElevatedButton(
+                            exitAccount: user.isUserFree ? false : true,
                             edgeInsets: const EdgeInsets.only(top: 15, bottom: 15),
-                            onPressed: !editing
-                                ? createStore.sendPressed
-                                : () => showDialog(
-                                      context: context,
-                                      builder: (_) => Observer(builder: (_) {
-                                        return AlertDialog(
-                                          elevation: 8,
-                                          title: !createStore.loading
-                                              ? const Text('Editar Manifestação')
-                                              : const Text(
-                                                  'Alterando Status',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                          content: !createStore.loading
-                                              ? const Padding(
-                                                  padding: EdgeInsets.only(top: 10),
-                                                  child: Text(
-                                                    'Deseja editar a Manifestação? Ao confirmar, o status será retornado para "Pendente".',
-                                                    style: TextStyle(fontSize: 17),
-                                                  ),
-                                                )
-                                              : Padding(
-                                                  padding: const EdgeInsets.only(top: 10),
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Row(
+                            onPressed: user.isUserFree
+                                ? !editing
+                                    ? createStore.sendPressed
+                                    : () => showDialog(
+                                          context: context,
+                                          builder: (_) => Observer(builder: (_) {
+                                            return AlertDialog(
+                                              elevation: 8,
+                                              title: !createStore.loading
+                                                  ? const Text('Editar Manifestação')
+                                                  : const Text(
+                                                      'Alterando Status',
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                              content: !createStore.loading
+                                                  ? const Padding(
+                                                      padding: EdgeInsets.only(top: 10),
+                                                      child: Text(
+                                                        'Deseja editar a Manifestação? Ao confirmar, o status será retornado para "Pendente".',
+                                                        style: TextStyle(fontSize: 17),
+                                                      ),
+                                                    )
+                                                  : Padding(
+                                                      padding: const EdgeInsets.only(top: 10),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
                                                         mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: const [
-                                                          CircularProgressIndicator(
-                                                            valueColor: AlwaysStoppedAnimation(defaultColor),
-                                                          ),
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: const [
+                                                              CircularProgressIndicator(
+                                                                valueColor: AlwaysStoppedAnimation(defaultColor),
+                                                              ),
+                                                            ],
+                                                          )
                                                         ],
+                                                      ),
+                                                    ),
+                                              actions: [
+                                                !createStore.loading
+                                                    ? TextButton(
+                                                        onPressed:
+                                                            !createStore.loading ? Navigator.of(context).pop : null,
+                                                        child: const Text(
+                                                          'Não',
+                                                          style: TextStyle(color: defaultColor, fontSize: 17),
+                                                        ),
                                                       )
-                                                    ],
-                                                  ),
-                                                ),
-                                          actions: [
-                                            !createStore.loading
-                                                ? TextButton(
-                                                    onPressed: !createStore.loading ? Navigator.of(context).pop : null,
-                                                    child: const Text(
-                                                      'Não',
-                                                      style: TextStyle(color: defaultColor, fontSize: 17),
-                                                    ),
-                                                  )
-                                                : Container(),
-                                            !createStore.loading
-                                                ? TextButton(
-                                                    onPressed: !createStore.loading ? createStore.sendPressed : null,
-                                                    child: const Text(
-                                                      'Sim',
-                                                      style: TextStyle(color: errorColor, fontSize: 17),
-                                                    ),
-                                                  )
-                                                : Container(),
-                                          ],
-                                        );
-                                      }),
-                                    ),
+                                                    : Container(),
+                                                !createStore.loading
+                                                    ? TextButton(
+                                                        onPressed:
+                                                            !createStore.loading ? createStore.sendPressed : null,
+                                                        child: const Text(
+                                                          'Sim',
+                                                          style: TextStyle(color: errorColor, fontSize: 17),
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              ],
+                                            );
+                                          }),
+                                        )
+                                : null,
                             containerActionButton: Container(
                               alignment: Alignment.center,
                               child: !editing
@@ -255,10 +266,9 @@ class _CreateScreenState extends State<CreateScreen> {
                                       ? const CircularProgressIndicator(
                                           valueColor: AlwaysStoppedAnimation(Colors.white),
                                         )
-                                      : const Text(
-                                          'CADASTRAR',
-                                          style: TextStyle(color: Colors.white),
-                                        )
+                                      : user.isUserFree
+                                          ? const Text('CADASTRAR', style: TextStyle(color: Colors.white))
+                                          : const Text('CADASTRAR', style: TextStyle(color: Colors.black38))
                                   : createStore.loading
                                       ? const CircularProgressIndicator(
                                           valueColor: AlwaysStoppedAnimation(Colors.white),
