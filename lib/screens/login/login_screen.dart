@@ -72,22 +72,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       return ErrorBox(message: loginStore.errorText);
                     }),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 3, bottom: 4, top: 1),
+                      padding: const EdgeInsets.only(left: 3, bottom: 4, top: 1),
                       child: Text(
                         'E-mail',
-                        style: TextStyle(
-                            color: Colors.grey[800],
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Colors.grey[800], fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                     ),
                     Observer(builder: (_) {
                       return TextField(
                         decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            isDense: true,
-                            errorText: loginStore.emailError),
+                            border: const OutlineInputBorder(), isDense: true, errorText: loginStore.emailError),
                         keyboardType: TextInputType.emailAddress,
                         onChanged: loginStore.setEmail,
                         textInputAction: TextInputAction.next,
@@ -97,8 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 16,
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 3, bottom: 4, top: 8),
+                      padding: const EdgeInsets.only(left: 3, bottom: 4, top: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -109,16 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
                             ),
-                          ),
-                          GestureDetector(
-                            child: const Text(
-                              'Esqueci a senha',
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: defaultColor,
-                                  fontSize: 15),
-                            ),
-                            onTap: () {},
                           ),
                         ],
                       ),
@@ -142,8 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           alignment: Alignment.center,
                           child: loginStore.loading
                               ? const CircularProgressIndicator(
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white),
+                                  valueColor: AlwaysStoppedAnimation(Colors.white),
                                 )
                               : const Text('ENTRAR'),
                         ),
