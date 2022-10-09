@@ -239,6 +239,22 @@ mixin _$CreateStore on _CreateStore, Store {
     });
   }
 
+  late final _$editManifestationAtom =
+      Atom(name: '_CreateStore.editManifestation', context: context);
+
+  @override
+  bool get editManifestation {
+    _$editManifestationAtom.reportRead();
+    return super.editManifestation;
+  }
+
+  @override
+  set editManifestation(bool value) {
+    _$editManifestationAtom.reportWrite(value, super.editManifestation, () {
+      super.editManifestation = value;
+    });
+  }
+
   late final _$_sendAsyncAction =
       AsyncAction('_CreateStore._send', context: context);
 
@@ -274,6 +290,7 @@ street: ${street},
 loading: ${loading},
 errorText: ${errorText},
 savedManifestation: ${savedManifestation},
+editManifestation: ${editManifestation},
 imagesError: ${imagesError},
 titleError: ${titleError},
 streetError: ${streetError},

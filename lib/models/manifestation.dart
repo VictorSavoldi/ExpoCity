@@ -6,7 +6,7 @@ import 'package:expocity/repositories/table_keys.dart';
 import 'package:expocity/repositories/user_repository.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-enum ManifestationStatus { ACTIVE, RESOLVED, DELETED }
+enum ManifestationStatus { ACTIVE, RESOLVED, DELETED, PENDING }
 
 class Manifestation {
   Manifestation();
@@ -49,7 +49,7 @@ class Manifestation {
 
   bool hidName = false;
 
-  ManifestationStatus status = ManifestationStatus.ACTIVE;
+  ManifestationStatus status = ManifestationStatus.PENDING;
 
   late DateTime createdAt;
   late User user;

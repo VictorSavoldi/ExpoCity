@@ -1,7 +1,9 @@
+const keyUserTable = 'User';
 const keyUserId = 'objectId';
 const keyUserName = 'name';
 const keyUserEmail = 'email';
 const keyUserType = 'userType';
+const keyUserBlock = 'userBlock';
 const keyUserCreatedAt = 'createdAt';
 
 const keyCategoryTable = 'Categories';
@@ -31,3 +33,4 @@ const keyManifestationStreet = 'street';
 const keyManifestationImages = 'images';
 const keyManifestationCreatedAt = 'createdAt';
 const keyManifestationOwner = 'owner';
+const keyManifestationUpdatedAt = 'updatedAt';

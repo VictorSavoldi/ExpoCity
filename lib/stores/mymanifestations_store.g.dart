@@ -25,6 +25,14 @@ mixin _$MymanifestationsStore on _MymanifestationsStore, Store {
               () => super.resolvedManifestations,
               name: '_MymanifestationsStore.resolvedManifestations'))
           .value;
+  Computed<List<Manifestation>>? _$pendingManifestationsComputed;
+
+  @override
+  List<Manifestation> get pendingManifestations =>
+      (_$pendingManifestationsComputed ??= Computed<List<Manifestation>>(
+              () => super.pendingManifestations,
+              name: '_MymanifestationsStore.pendingManifestations'))
+          .value;
 
   late final _$loadingAtom =
       Atom(name: '_MymanifestationsStore.loading', context: context);
@@ -94,7 +102,8 @@ mixin _$MymanifestationsStore on _MymanifestationsStore, Store {
 loading: ${loading},
 allManifestations: ${allManifestations},
 activeManifestations: ${activeManifestations},
-resolvedManifestations: ${resolvedManifestations}
+resolvedManifestations: ${resolvedManifestations},
+pendingManifestations: ${pendingManifestations}
     ''';
   }
 }

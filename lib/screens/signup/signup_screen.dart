@@ -1,4 +1,3 @@
-import 'package:expocity/screens/home/home_screen.dart';
 import 'package:expocity/screens/signup/components/field_title.dart';
 import 'package:expocity/stores/signup_store.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     reaction((_) => userManagerStore.user != null, (u) {
       if (u != null) {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => HomeScreen(),
-        ));
+        Navigator.of(context).pop();
       }
     });
   }

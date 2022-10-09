@@ -32,6 +32,12 @@ abstract class _MymanifestationsStore with Store {
           manifestation.status == ManifestationStatus.RESOLVED)
       .toList();
 
+  @computed
+  List<Manifestation> get pendingManifestations => allManifestations
+      .where((manifestation) =>
+          manifestation.status == ManifestationStatus.PENDING)
+      .toList();
+
   Future<void> _getMyManifestations() async {
     final user = GetIt.I<UserManagerStore>().user;
 

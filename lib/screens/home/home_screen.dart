@@ -9,6 +9,8 @@ import 'package:get_it/get_it.dart';
 
 import '../../components/custom_app_bar/custom_app_bar.dart';
 import '../../components/custom_drawer/custom_drawer.dart';
+import '../../stores/user_manager_store.dart';
+import '../manifestation/manifestation_screen.dart';
 import 'components/create_manifestation_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +23,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final HomeStore homeStore = GetIt.I<HomeStore>();
 
+  final UserManagerStore userManagerStore = GetIt.I<UserManagerStore>();
+
   final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    homeStore.resetPage();
+  }
 
   openSerch(BuildContext context) async {
     final search = await showDialog(
@@ -98,10 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               'Ocorreu um erro!',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: defaultColor,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700),
+                              style: TextStyle(color: defaultColor, fontSize: 20, fontWeight: FontWeight.w700),
                             )
                           ],
                         ),
@@ -129,10 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               'Nenhuma manifestação encontrada!',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: defaultColor,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700),
+                              style: TextStyle(color: defaultColor, fontSize: 20, fontWeight: FontWeight.w700),
                             )
                           ],
                         ),
@@ -145,29 +150,39 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: homeStore.itemCount,
                           itemBuilder: (_, index) {
                             if (index < homeStore.manifestationList.length) {
-                              return ManifestationTile(
-                                  manifestation:
-                                      homeStore.manifestationList[index]);
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (_) =>
+                                              ManifestationScreen(manifestation: homeStore.manifestationList[index])))
+                                      .then((_) {
+                                    homeStore.resetPage();
+                                    setState(() {});
+                                  });
+                                },
+                                child: ManifestationTile(manifestation: homeStore.manifestationList[index]),
+                              );
                             }
                             homeStore.loadNextPage();
                             return const SizedBox(
                               height: 10,
                               child: LinearProgressIndicator(
                                 backgroundColor: backgroundColor,
-                                valueColor:
-                                    AlwaysStoppedAnimation(defaultColor),
+                                valueColor: AlwaysStoppedAnimation(defaultColor),
                               ),
                             );
                           }),
                     );
                   }),
-                  Positioned(
-                    bottom: -50,
-                    left: 0,
-                    right: 0,
-                    child: CreateManifestationButton(
-                        scrollController: scrollController),
-                  )
+                  userManagerStore.isLoggedin
+                      ? Positioned(
+                          bottom: -50,
+                          left: 0,
+                          right: 0,
+                          child: CreateManifestationButton(scrollController: scrollController),
+                        )
+                      : Container(),
                 ],
               ),
             ),

@@ -30,8 +30,14 @@ void setupLocators() {
 }
 
 Future<void> initializeParse() async {
-  await Parse().initialize(keyApplicationId, keyParseServerUrl,
-      clientKey: keyClientKey, autoSendSessionId: true, debug: true);
+  await Parse().initialize(
+    keyApplicationId,
+    keyParseServerUrl,
+    clientKey: keyClientKey,
+    autoSendSessionId: true,
+    debug: true,
+    masterKey: keyMasterKey,
+  );
 }
 
 class MyApp extends StatelessWidget {

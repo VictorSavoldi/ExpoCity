@@ -29,8 +29,7 @@ class ParseErrors {
     141: 'Falha no script Cloudcode (ScriptFailed)',
     142: 'Falha na validação do Cloudcode (ValidationFailed)',
     153: 'Falha na exclusão do arquivo (FileDeleteFailed)',
-    155:
-        'O aplicativo excedeu seu limite de solicitação (RequestLimitExceeded)',
+    155: 'O aplicativo excedeu seu limite de solicitação (RequestLimitExceeded)',
     160: 'Evento inválido (InvalidEventName)',
     200: 'Nome do usuário não foi preenchido',
     201: 'Senha não foi preenchida',
@@ -42,10 +41,8 @@ class ParseErrors {
     207: 'Usuário só pode ser criado via Signup (MustCreateUserThroughSignup)',
     208: 'A conta informada já está vinculada com outro usuário',
     209: 'Sessão inválida (InvalidSessionToken)',
-    250:
-        'Usuário não pode ser vinculado a uma conta porque o ID não foi localizado (InvalidSessionToken)',
-    251:
-        'Usuário com conta vinculada está com sessão inválida (InvalidLinkedSession)',
+    250: 'Usuário não pode ser vinculado a uma conta porque o ID não foi localizado (InvalidSessionToken)',
+    251: 'Usuário com conta vinculada está com sessão inválida (InvalidLinkedSession)',
     252: 'Serviço que está sendo vinculado não é suportado (UnsupportedService)'
   };
 
