@@ -70,7 +70,7 @@ flutter_native_splash:
 flutter_icons:
   image_path: "assets/icon_transp.png"
   android: "launcher_icon"
-  adaptive_icon_background: "#F5F5F5"
+  adaptive_icon_background: "#E6E6E6"
   adaptive_icon_foreground: "assets/icon_transp.png"
 
 
