@@ -47,13 +47,13 @@ abstract class _SignupStore with Store {
     loading = true;
 
     try {
-      GetIt.I<UserManagerStore>().setUserSingUp(await UserRepository()
-          .signUp(User.createUser(name: name, email: email, password: pass1)));
+      GetIt.I<UserManagerStore>()
+          .setUserSingUp(await UserRepository().signUp(User.createUser(name: name, email: email, password: pass1)));
+
+      errorText = '';
     } catch (e) {
       errorText = e.toString();
     }
-
-    errorText = '';
 
     loading = false;
   }
@@ -63,8 +63,7 @@ abstract class _SignupStore with Store {
   bool get _emailValid => email.isNotEmpty && email.isEmailValid();
   bool get _pass1Valid => pass1.isNotEmpty && pass1.length >= 6;
   bool get _pass2Valid => pass2.isNotEmpty && pass2 == pass1;
-  bool get _isFormValid =>
-      _nameValid && _emailValid && _pass1Valid && _pass2Valid;
+  bool get _isFormValid => _nameValid && _emailValid && _pass1Valid && _pass2Valid;
   Future<void> Function()? get signUpPressed => (!loading) ? _signUp : null;
 
   @computed
