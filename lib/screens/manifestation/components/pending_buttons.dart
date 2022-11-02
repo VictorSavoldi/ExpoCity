@@ -162,10 +162,15 @@ class PendingButtons extends StatelessWidget {
                           content: !store.loading
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    'Deseja bloquear o usuário "${manifestation.user.name}"?',
-                                    style: const TextStyle(fontSize: 17),
-                                  ),
+                                  child: manifestation.hidName
+                                      ? Text(
+                                          'Deseja bloquear o usuário que cadastrou a manifestação"?',
+                                          style: const TextStyle(fontSize: 17),
+                                        )
+                                      : Text(
+                                          'Deseja bloquear o usuário "${manifestation.user.name}"?',
+                                          style: const TextStyle(fontSize: 17),
+                                        ),
                                 )
                               : Padding(
                                   padding: const EdgeInsets.only(top: 10),
