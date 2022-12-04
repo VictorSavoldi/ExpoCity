@@ -1,6 +1,6 @@
 # Expocity
 
-Projeto de TCC - EpoCity
+Projeto de TCC - ExpoCity
 
 ## Getting Started
 
